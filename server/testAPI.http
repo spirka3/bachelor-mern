@@ -1,0 +1,71 @@
+### USERS
+
+GET http://localhost:4000/pages
+
+###
+
+PATCH http://localhost:4000/users/6033891cb9538243b0b23061
+Content-Type: application/json
+
+{
+  "name": "name",
+  "password": "password",
+  "email": "email2"
+}
+
+###
+
+POST http://localhost:4000/pages/
+Content-Type: application/json
+
+{
+  "title": "page3",
+  "description": "eq.body.description",
+  "path": "/page3",
+  "status": "active",
+  "created_by": "6033891cb9538243b0b23061"
+}
+
+
+###
+
+PATCH http://localhost:4000/pages/6033c94f1916fa2b70837a37
+Content-Type: application/json
+
+{
+  "title": "page1",
+  "description": "eq.body.description",
+  "path": "/page1",
+  "status": "active",
+  "created_by": "6033891cb9538243b0b23061"
+}
+
+###
+
+POST http://localhost:4000/modules
+Content-Type: application/json
+
+{
+  "page": "6033beab1cbae847806d310e",
+  "name": "module1",
+  "type": "card",
+  "position": {
+    "x": 4,
+    "y": 0,
+    "w": 2,
+    "h": 5
+  },
+  "body": {
+    "title": "The first card",
+    "text": "text",
+    "img": "https://picsum.photos/200",
+    "style": {
+      "width": "18rem"
+    }
+  },
+  "status": "active"
+}
+
+###
+
+GET http://localhost:4000/modules/page/6033bbe31cbae847806d310d

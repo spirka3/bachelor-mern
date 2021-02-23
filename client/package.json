@@ -1,0 +1,61 @@
+{
+  "name": "mcms",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
+    "install": "^0.13.0",
+    "lodash": "^4.17.20",
+    "npm": "^6.14.11",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.1",
+    "react-avatar-editor": "^11.1.0",
+    "react-bootstrap": "^1.4.3",
+    "react-bootstrap-icons": "^1.2.3",
+    "react-bootstrap-sidebar": "0.0.1",
+    "react-bootstrap-table-next": "^4.0.3",
+    "react-dom": "^17.0.1",
+    "react-grid-layout": "^1.2.0",
+    "react-hook-form": "^6.14.2",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.1",
+    "react-uuid": "^1.0.2",
+    "uuid": "^8.3.2",
+    "web-vitals": "^0.2.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  },
+  "proxy": "http://localhost:4000"
+}
