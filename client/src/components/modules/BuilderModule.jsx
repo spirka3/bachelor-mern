@@ -7,43 +7,9 @@ import SmallButton from "../buttons/SmallButton";
 import {ButtonGroup, OverlayTrigger, Tooltip} from "react-bootstrap";
 import axios from "axios";
 
-const BuilderModule = ({module, onPutItem, showBtn=true}) => {
+const BuilderModule = ({module, togglePin, onHide, onRemove, showBtn=true}) => {
 
   const [showModal, setShowModal] = useState(false)
-
-  const id = module._id
-  const {static: pin} = module.position
-
-  const pinToggle = () => {
-    const updateStatic = pin === null ? false : !pin
-    axios.patch('/modules/'+id, {
-      ...module,
-      position: {
-        ...module.position,
-        static: updateStatic
-      }
-    })
-      .then(response => {
-        console.log(response)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
-  const hideToggle = () => {
-    onPutItem(module.position)
-  }
-
-  const remove = () => {
-    axios.delete('/modules/'+id)
-      .then(response => {
-        console.log(response)
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  }
 
   const Module = () => {
     switch(module.type) {
@@ -65,13 +31,14 @@ const BuilderModule = ({module, onPutItem, showBtn=true}) => {
           <SmallButton className="show-up" onClick={() => setShowModal(true)}>
             Edit
           </SmallButton>
-          <SmallButton onClick={pinToggle}>
-            {pin ? 'Unpin' : 'Pin'}
+          <SmallButton onClick={togglePin}>
+            {/*{pin ? 'Unpin' : 'Pin'}*/}
+            Pin
           </SmallButton>
-          <SmallButton onClick={hideToggle}>
+          <SmallButton onClick={onHide}>
             Hide
           </SmallButton>
-          <SmallButton onClick={remove}>
+          <SmallButton onClick={onRemove}>
             Remove
           </SmallButton>
         </ButtonGroup>

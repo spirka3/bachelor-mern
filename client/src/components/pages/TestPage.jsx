@@ -8,33 +8,43 @@ import BuilderModule from "../modules/BuilderModule";
 import SmallButton from "../buttons/SmallButton";
 import NewModal from "../modules/modals/NewModal";
 import {ToolBox} from "../others/Toolbox";
+import {GridBoxItem} from "../others/Gridbox";
 
 const GridLayout = WidthProvider(Responsive);
 
 const TestPage = ({id='6033bbe31cbae847806d310d'}) => {
 
-  const [modules, isLoaded, error] = useDataApi('/modules/page/'+id)
+  const [data, isLoaded, error] = useDataApi('/modules/page/'+id)
 
   const [moduleType, setModuleType] = useState()
-  // lg: the field is important to make GridLayout works
-  const [layouts, setLayouts] = useState({ lg: [] })
+  const [modules, setModules] = useState([]);
+  const [layouts, setLayouts] = useState({ lg: [] }) // lg: the field is important to make GridLayout works
 
   useEffect(() => {
-    if (modules) {
-      // i: the field is important to make GridLayout works
-      setLayouts({ lg: modules.map(m => m.position) })
+    if (data) {
+      setModules(data)
+      setLayouts({ lg: data.map(m => {
+        return {
+          ...m.position,
+          i: m._id // i: the field is important to make GridLayout works
+        }
+        }) })
     }
-  }, [modules])
+  }, [data])
 
   if (error) {
     return <FetchError e={`Error: ${error.message}`}/>
-  } else if (!isLoaded || !modules) {
+  } else if (!isLoaded || !data) {
     return <FetchLoading/>
   }
 
   const compactType = 'vertical'
   const animated = true
 
+  const onLayoutChange = (layout) => {
+    console.log('changed', layout)
+    setLayouts({lg: layout})
+  }
   const getModule = id => modules.find(m => m._id === id)
 
   const savePositions = () => {
@@ -52,65 +62,26 @@ const TestPage = ({id='6033bbe31cbae847806d310d'}) => {
     })
   }
 
-  const onTakeItem = item => {
-    const update = { lg: []}
-    console.log('prev', update)
-    layouts.lg.forEach(l => {
-      if (l.i === item.i) {
-        update.lg.push({
-          ...l,
-          hide: false
-        })
-      } else {
-        update.lg.push(l)
-      }
-    })
-    console.log('current', update)
-    setLayouts(update)
-  }
-  const onPutItem = item => {
-    const update = { lg: []}
-    console.log('prev', update)
-    layouts.lg.forEach(l => {
-      if (l.i === item.i) {
-        update.lg.push({
-          ...l,
-          hide: true
-        })
-      } else {
-        update.lg.push(l)
-      }
-    })
-    console.log('current', update)
-    setLayouts(update)
-  }
-
-  const onLayoutChange = (layout) => {
-    setLayouts({lg: layout})
-  }
-
-  const BoxItem = ({layout}) => {
-    return (
-        <BuilderModule module={getModule(layout.i)} onPutItem={onPutItem}/>
-    );
-  }
-
-
-  const createGridModules = () => {
+  const generateGrid = () => {
     const showing = layouts.lg.filter(layout => !layout.hide)
-    console.log('showing', showing)
-    return showing.map(layout =>
+    return showing.map(layout => (
       <div key={layout.i}>
-       <BoxItem layout={layout}/>
+        <GridBoxItem
+          module={getModule(layout.i)}
+          layouts={layouts}
+          setLayouts={setLayouts}
+        />
       </div>
-    )
+    ))
+    // return <GridBox layouts={layouts} setLayouts={setLayouts}/>
   }
 
   return (
     <>
       <ToolBox
         items={layouts.lg || []}
-        onTakeItem={onTakeItem}
+        layouts={layouts}
+        setLayouts={setLayouts}
       />
       <GridLayout
         layouts={layouts}
@@ -120,19 +91,20 @@ const TestPage = ({id='6033bbe31cbae847806d310d'}) => {
         measureBeforeMount={!animated}
         useCSSTransforms={animated}
       >
-        {createGridModules()}
+        {generateGrid()}
       </GridLayout>
+
       <ButtonGroup onClick={(e) => setModuleType(e.target.name)}>
         <SmallButton variant="dark" name="card">+card</SmallButton>
         <SmallButton variant="dark" name="image">+module</SmallButton>
       </ButtonGroup>
-      <SmallButton onClick={savePositions} variant="dark" name="image">Save positions</SmallButton>
+      <SmallButton onClick={savePositions} variant="dark">Save</SmallButton>
       {moduleType &&
-      <NewModal
-        pageId={id}
-        moduleType={moduleType}
-        setShowModal={setModuleType}
-      />
+        <NewModal
+          pageId={id}
+          moduleType={moduleType}
+          setShowModal={setModuleType}
+        />
       }
     </>
   );
