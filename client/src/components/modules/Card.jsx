@@ -4,7 +4,6 @@ import {Card as C} from 'react-bootstrap'
 const Card = ({id, body}) => {
 
   const {img, title, text, style} = body
-  console.log('card', id, body)
   // className="w-100 h-100 module-grid"
   return (
     <C style={style} key={id}>

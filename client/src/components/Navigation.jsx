@@ -5,23 +5,12 @@ import {SearchBar} from './SearchBar'
 import Image from "react-bootstrap/Image";
 import {useLocation} from "react-router";
 // import Sidebar from 'react-bootstrap-sidebar';
-import Button from "react-bootstrap/Button";
 import uuid from "react-uuid";
-import useDataApi from "../helpers/useDataApi";
-import {FetchError, FetchLoading} from "./others/FetchComponents";
 
-const Navigation = () => {
+const Navigation = ({pages}) => {
 
   const location = useLocation()
   const [visible, setVisible] = useState(false);
-
-  const [pages, isLoaded, error] = useDataApi('/pages');
-
-  if (error) {
-    return <FetchError e={`Error: ${error.message}`}/>
-  } else if (!isLoaded || !pages) {
-    return <FetchLoading/>
-  }
 
   const createLink = (n) => {
     return (

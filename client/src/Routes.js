@@ -14,18 +14,8 @@ import RegisterPage from "./components/pages/RegisterPage";
 import Page404 from "./components/pages/Page404";
 import uuid from "react-uuid";
 import TestPage from "./components/pages/TestPage";
-import useDataApi from "./helpers/useDataApi";
-import {FetchError, FetchLoading} from "./components/others/FetchComponents";
 
-function Routes() {
-
-  const [pages, isLoaded, error] = useDataApi('/pages');
-
-  if (error) {
-    return <FetchError e={`Error: ${error.message}`}/>
-  } else if (!isLoaded || !pages) {
-    return <FetchLoading/>
-  }
+function Routes({pages}) {
 
   const PrivateRoute = ({ component: Component, ...rest }) => (
     // Show the component only when the user is logged in
@@ -37,15 +27,7 @@ function Routes() {
     />
   )
 
-  // const LogoutRoute = ({ component: Component, ...rest }) => (
-  //   <Route {...rest} render={props => (getUser() === null
-  //       && <Component {...props} />
-  //     )}
-  //   />
-  // )
-
   const createRoute = ({path, _id}) => {
-    console.log(path, _id)
     return (
       <Route exact path={path} key={uuid()}>
         <CustomPage id={_id}/>
@@ -57,17 +39,11 @@ function Routes() {
     <Switch>
       {/* Home route */}
       <Route path='/' exact component={ExampleLayout} />
-      {/*<Route exact path="/"*/}
-      {/*       render={() => {*/}
-      {/*         return ( getUser() !== null*/}
-      {/*             ? <Redirect to="/records-to-sign" component={RecordsToSignPage}/>*/}
-      {/*             : <Redirect to="/login" component={LoginPage}/>*/}
-      {/*         )}}*/}
-      {/*/>*/}
       {/* Basic routes */}
       <Route exact path='/test' component={TestPage} />
       <Route exact path='/register' component={RegisterPage} />
       <Route exact path='/login' component={LoginPage} />
+      {/* Private routes */}
       <PrivateRoute exact path='/logout' component={LogoutPage} />
       <PrivateRoute exact path='/profile-settings' component={ProfileForm} />
       <PrivateRoute exact path='/admin' component={AdminPage} />

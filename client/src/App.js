@@ -8,6 +8,8 @@ import Footer from "./components/Footer.jsx"
 import Routes from "./Routes"
 import Header from "./components/toolbar/Header";
 import Dashboard from "./components/toolbar/Dash";
+import useDataApi from "./helpers/useDataApi";
+import {FetchError, FetchLoading} from "./components/others/FetchComponents";
 
 function App() {
 
@@ -21,13 +23,21 @@ function App() {
     setShowDrawer(true)
   };
 
+  const [pages, isLoaded, error] = useDataApi('/pages');
+
+  if (error) {
+    return <FetchError e={`Error: ${error.message}`}/>
+  } else if (!isLoaded || !pages) {
+    return <FetchLoading/>
+  }
+
   return (
     <Router>
       {/*<Header />*/}
-      <Navigation/>
+      <Navigation pages={pages}/>
       {/*<Dashboard/>*/}
       <Container>
-        <Routes/>
+        <Routes pages={pages}/>
       </Container>
       <Footer/>
     </Router>

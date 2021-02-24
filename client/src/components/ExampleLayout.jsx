@@ -6,6 +6,7 @@ const ExampleLayout = () => {
   const [layout, setLayout] = useState([])
 
   const onLayoutChange = (layout) => {
+    console.log(layout)
     setLayout(layout);
   }
 

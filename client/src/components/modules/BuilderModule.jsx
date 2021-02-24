@@ -7,8 +7,8 @@ import SmallButton from "../buttons/SmallButton";
 import {ButtonGroup, OverlayTrigger, Tooltip} from "react-bootstrap";
 import axios from "axios";
 
-const BuilderModule = ({module, showBtn=true}) => {
-  console.log(module)
+const BuilderModule = ({module, onPutItem, showBtn=true}) => {
+
   const [showModal, setShowModal] = useState(false)
 
   const id = module._id
@@ -27,24 +27,12 @@ const BuilderModule = ({module, showBtn=true}) => {
         console.log(response)
       })
       .catch(err => {
-        console.log(err);
+        console.log(err)
       })
   }
 
   const hideToggle = () => {
-    axios.patch('/modules/'+id, {
-      ...module,
-      position: {
-        ...module.position,
-        static: true
-      }
-    })
-      .then(response => {
-        console.log(response)
-      })
-      .catch(err => {
-        console.log(err);
-      })
+    onPutItem(module.position)
   }
 
   const remove = () => {
@@ -60,10 +48,8 @@ const BuilderModule = ({module, showBtn=true}) => {
   const Module = () => {
     switch(module.type) {
       case "card":
-        console.log('card', module)
         return <Card id={module._id} body={module.body} />
       case "image":
-        console.log('image', module)
         return <Image id={module._id} body={module.body} />
       default:
         console.log('module was not rendered', module)
@@ -76,16 +62,16 @@ const BuilderModule = ({module, showBtn=true}) => {
       <Module/>
       {showBtn &&
         <ButtonGroup className="w-100">
-          <SmallButton className="showmes" onClick={() => setShowModal(true)}>
+          <SmallButton className="show-up" onClick={() => setShowModal(true)}>
             Edit
           </SmallButton>
-          <SmallButton className="showmes" onClick={pinToggle}>
+          <SmallButton onClick={pinToggle}>
             {pin ? 'Unpin' : 'Pin'}
           </SmallButton>
-          <SmallButton className="showmes" onClick={hideToggle}>
+          <SmallButton onClick={hideToggle}>
             Hide
           </SmallButton>
-          <SmallButton className="showmes" onClick={remove}>
+          <SmallButton onClick={remove}>
             Remove
           </SmallButton>
         </ButtonGroup>

@@ -1,6 +1,6 @@
 import React from "react";
 
-const ToolBoxItem = ({item, onTakeItem}) => {
+const GridBoxItem = ({item, onTakeItem}) => {
   if (!item.hide){
     console.log('not hidden')
     return null
@@ -15,7 +15,7 @@ const ToolBoxItem = ({item, onTakeItem}) => {
   )
 }
 
-export const ToolBox = ({items, onTakeItem}) => {
+export const GridBox = ({items, onTakeItem}) => {
   return (
     <div className="toolbox">
       <span className="toolbox__title">Toolbox</span>

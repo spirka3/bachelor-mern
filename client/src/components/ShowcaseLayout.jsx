@@ -9,6 +9,7 @@ const GridLayout = WidthProvider(Responsive);
 const ShowcaseLayout = ({onLayoutChange}) => {
 
   const createGridModules = () => {
+    console.log(layouts)
     return _.map(layouts.lg, l => {
       return (
         <div key={l.i} className={l.static ? "static" : ""}>
