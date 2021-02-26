@@ -8,14 +8,9 @@ const LoginPage = () => {
 
   const [loginError, setLoginError] = useState("");
 
-
   const login = (data) => {
-    axios.post('/auth/login', {
-      email: data.email,
-      password: data.password
-    })
+    axios.post('/auth/login', data)
       .then(response => {
-        console.log(response)
         if (response.status === 200) {
           localStorage.setItem('token', response.data)
           window.location.reload(false);

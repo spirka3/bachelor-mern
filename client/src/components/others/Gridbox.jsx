@@ -1,70 +1,53 @@
-import React from "react";
+import React, {useState} from "react";
 import BuilderModule from "../modules/BuilderModule";
 import axios from "axios";
 
-export const GridBoxItem = ({module, layouts, setLayouts}) => {
-  console.log('gridModule', module)
-  const id = module._id
-  let pin = module.position.static
+export const GridBoxItem = ({module, setLayouts, setToolbox}) => {
+
+  let item = module.position
 
   const onHide = () => {
-    console.log('hide')
-    console.log('prev', layouts)
-    const update = []
-    layouts.lg.forEach(l => {
-      if (l.i === id) {
-        l.hide = true
+    setToolbox(prevState => {
+      return {
+        ...prevState,
+        lg: [...(prevState.lg || []), item]
       }
-      update.push(l)
     })
-    console.log('current', update)
-    setLayouts({lg: update})
+    setLayouts(prevState => {
+      return {
+        ...prevState,
+        hide: true,
+        lg: prevState.lg.filter(({ i }) => i !== item.i)
+      }
+    })
   }
 
   const togglePin = () => {
-    console.log('toggle', pin)
-    console.log('prev', layouts)
-    const update = []
-    pin = pin === null ? false : !pin
-    layouts.lg.forEach(l => {
-      if (l.i === id) {
-        console.log('found', pin)
-        l.static = pin
-      }
-      console.log(l)
-      update.push(l)
+    console.log('toggle')
+    setLayouts(prev => {
+      const filtered = prev.lg.filter(({ i }) => i !== item.i)
+      const found = prev.lg.find(({ i }) => i === item.i)
+
+      found.static = !found.static
+      console.log('changed to', found.static)
+      return {...prev, lg: [...filtered, found]}
     })
-    console.log('curr', update)
-    setLayouts({lg: update})
-    // const updateStatic = pin === null ? false : !pin
-    // axios.patch('/modules/'+id, {
-    //   ...module,
-    //   position: {
-    //     ...module.position,
-    //     static: updateStatic
-    //   }
-    // })
-    //   .then(response => {
-    //     console.log(response)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
   }
 
   const onRemove = () => {
     console.log('remove')
-    console.log('prev', layouts)
-    const update = layouts.lg.filter(l => l.i !== id)
-    console.log('curr', update)
-    setLayouts({lg: update})
-    // axios.delete('/modules/'+id)
-    //   .then(response => {
-    //     console.log(response)
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   })
+    axios.delete('/modules/'+module._id)
+      .then(response => {
+        setLayouts(prev => {
+          return {
+            lg: prev.lg.filter(({ i }) => i !== module._id)
+          }
+        })
+        console.log(response)
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
   return (

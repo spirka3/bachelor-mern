@@ -18,3 +18,11 @@ export const generateLayout = () => {
     };
   });
 }
+
+// https://stackoverflow.com/a/34890276
+export const groupBy = function(xs, key) {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};

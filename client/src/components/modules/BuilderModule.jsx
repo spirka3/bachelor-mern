@@ -7,8 +7,9 @@ import SmallButton from "../buttons/SmallButton";
 import {ButtonGroup, OverlayTrigger, Tooltip} from "react-bootstrap";
 import axios from "axios";
 
-const BuilderModule = ({module, togglePin, onHide, onRemove, showBtn=true}) => {
+const BuilderModule = ({module: m, togglePin, onHide, onRemove, showBtn=true}) => {
 
+  const [module, setModule] = useState(m);
   const [showModal, setShowModal] = useState(false)
 
   const Module = () => {
@@ -23,7 +24,7 @@ const BuilderModule = ({module, togglePin, onHide, onRemove, showBtn=true}) => {
   }
 
   return (
-    <div key={module._id}>
+    <>
       <h1 className="toolbar">Hello, I'm the Toolbar</h1>
       <Module/>
       {showBtn &&
@@ -32,8 +33,7 @@ const BuilderModule = ({module, togglePin, onHide, onRemove, showBtn=true}) => {
             Edit
           </SmallButton>
           <SmallButton onClick={togglePin}>
-            {/*{pin ? 'Unpin' : 'Pin'}*/}
-            Pin
+            {module.position.static ? 'Unpin' : 'Pin'}
           </SmallButton>
           <SmallButton onClick={onHide}>
             Hide
@@ -46,10 +46,11 @@ const BuilderModule = ({module, togglePin, onHide, onRemove, showBtn=true}) => {
       {showModal &&
         <EditModal
           module={module}
+          setModule={setModule}
           setShowModal={setShowModal}
         />
       }
-    </div>
+    </>
   )
 }
 

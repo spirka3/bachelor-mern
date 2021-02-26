@@ -53,7 +53,7 @@ const ShowcaseLayout = ({onLayoutChange}) => {
     })
   };
 
-  const [toolbox, setToolbox] = useState({ lg: [] })
+  const [toolbox, setToolbox] = useState({lg: [] })
   const [layouts, setLayouts] = useState({lg: generateLayout()})
 
   const compactType = 'vertical'
@@ -62,8 +62,9 @@ const ShowcaseLayout = ({onLayoutChange}) => {
   return (
     <div>
       <ToolBox
-        items={toolbox.lg || []}
-        onTakeItem={onTakeItem}
+        toolbox={toolbox.lg || []}
+        setToolbox={setToolbox}
+        setLayouts={setLayouts}
       />
       <GridLayout
         layouts={layouts}

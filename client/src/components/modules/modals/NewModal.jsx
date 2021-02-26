@@ -6,7 +6,7 @@ import ImageForm from "../../forms/ImageForm";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 
-const NewModal = ({pageId, moduleType, setShowModal}) => {
+const NewModal = ({pageId, moduleType, setModules, setShowModal, setLayouts}) => {
 
   const [isDirty, setIsDirty] = useState(false)
 
@@ -24,7 +24,8 @@ const NewModal = ({pageId, moduleType, setShowModal}) => {
         x: 4,
         y: 0,
         w: 2,
-        h: 5
+        h: 5,
+        static: false
       },
       body: data,
       status: "active"
@@ -32,6 +33,20 @@ const NewModal = ({pageId, moduleType, setShowModal}) => {
 
     axios.post('/modules', newModule)
       .then(response => {
+        const addedModule = response.data
+        const positionWithId = {
+            ...addedModule.position,
+            i: addedModule._id
+        }
+        setModules(prev => [...prev, {
+          ...addedModule,
+          position: positionWithId
+        }])
+        setLayouts(prev => {
+          return {
+            lg: [...prev.lg, positionWithId]
+          }
+        })
         console.log(response)
       })
       .catch(err => {
@@ -42,10 +57,8 @@ const NewModal = ({pageId, moduleType, setShowModal}) => {
   const Body = () => {
     switch(moduleType) {
       case "card":
-        console.log('card', module)
         return <CardForm register={register} setIsDirty={setIsDirty}/>
       case "image":
-        console.log('image', module)
         return <ImageForm register={register} setIsDirty={setIsDirty}/>
       default:
         console.log('module was not rendered', module)

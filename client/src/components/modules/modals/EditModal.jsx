@@ -7,9 +7,8 @@ import ImageForm from "../../forms/ImageForm";
 import axios from "axios";
 import BuilderModule from "../BuilderModule";
 
-const EditModal = ({module: m, setShowModal}) => {
+const EditModal = ({module, setModule, setShowModal}) => {
 
-  const [module, setModule] = useState(m);
   const [isDirty, setIsDirty] = useState(false)
 
   const {register, handleSubmit, reset} = useForm({
@@ -34,6 +33,7 @@ const EditModal = ({module: m, setShowModal}) => {
 
     axios.patch('/modules/'+module._id, updatedModule)
       .then(response => {
+        console.log(response)
         setModule(updatedModule)
       })
       .catch(err => {
@@ -62,7 +62,7 @@ const EditModal = ({module: m, setShowModal}) => {
 
   const Footer = () => {
     return (
-      <Button variant="dark" onClick={handleSubmit(onSubmit)}>Save</Button>
+      <Button variant="dark" onClick={handleSubmit(onSubmit)}>Save {module.type}</Button>
     )
   }
 

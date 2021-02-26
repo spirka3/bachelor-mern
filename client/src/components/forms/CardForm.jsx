@@ -13,7 +13,7 @@ const CardForm = (props) => {
         ...prevState,
         body: {
           ...prevState.body,
-          title: value
+          [name]: value
         }
       }
     })
@@ -21,7 +21,7 @@ const CardForm = (props) => {
 
   return (
     <Form onChange={setIsDirty(true)}>
-      {/* NAME */}
+      {/* TITLE */}
       <TextGroupForm
         label="title"
         name="title"
@@ -29,20 +29,29 @@ const CardForm = (props) => {
         required
         // onChange={handleChange}
       />
-      {/* PASS */}
+      {/* TEXT */}
       <TextGroupForm
         label="text"
         name="text"
         register={register}
         required
+        // onChange={handleChange}
       />
-      {/* PASS */}
+      {/* IMAGE */}
       <TextGroupForm
         label="image"
         name="img"
         register={register}
         required
+        // onChange={handleChange}
       />
+      {/* STYLE */}
+      {/*<TextGroupForm*/}
+      {/*  label="style"*/}
+      {/*  name="style"*/}
+      {/*  register={register}*/}
+      {/*  required*/}
+      {/*/>*/}
       {/*{loginError && <ErrorMessage text={loginError}/>}*/}
     </Form>
   )

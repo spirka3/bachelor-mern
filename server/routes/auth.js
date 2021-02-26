@@ -16,18 +16,11 @@ const router = Router();
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  // Simple validation
-  // if (!email || !password) {
-  //   return res.status(400).json({ msg: 'Please enter all fields' });
-  // }
 
   try {
-    console.log(email, password)
-    // Check for existing user
     const user = await User.findOne({ email });
-    if (!user) {
-      throw Error('User does not exist');
-    }
+    if (!user) throw Error('User does not exist');
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw Error('Invalid credentials');
 
@@ -39,7 +32,8 @@ router.post('/login', async (req, res) => {
       user: {
         id: user._id,
         name: user.name,
-        email: user.email
+        email: user.email,
+        role: user.role
       }
     });
   } catch (e) {
@@ -48,16 +42,15 @@ router.post('/login', async (req, res) => {
 });
 
 /**
- * @route   POST /users
+ * @route   POST /auth/register
  * @desc    Register new user
  */
 
 router.post('/register', async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, confirmPassword, role='user' } = req.body;
 
-  // Simple validation
-  if (!name || !email || !password) {
-    return res.status(400).json({ msg: 'Please enter all fields' });
+  if (password !== confirmPassword) {
+    return res.status(400).json({ msg: 'Passwords dont match' });
   }
 
   try {
@@ -73,7 +66,8 @@ router.post('/register', async (req, res) => {
     const newUser = new User({
       name,
       email,
-      password: hash
+      password: hash,
+      role
     });
 
     const savedUser = await newUser.save();
@@ -88,11 +82,13 @@ router.post('/register', async (req, res) => {
       user: {
         id: savedUser.id,
         name: savedUser.name,
-        email: savedUser.email
+        email: savedUser.email,
+        role: savedUser.role
       }
     });
   } catch (e) {
-    res.status(400).json({ error: e.message });
+    console.log('got here')
+    res.status(400).json({ msg: e.message });
   }
 });
 

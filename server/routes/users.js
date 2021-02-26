@@ -2,21 +2,6 @@ import { Router } from 'express';
 import User from '../models/User';
 const router = Router();
 
-// C
-router.post('/', async (req, res) => {
-  const user = new User({
-    name: req.body.name,
-    password: req.body.password,
-    email: req.body.email
-  })
-  try {
-    const newUser = await user.save()
-    res.status(201).json(newUser)
-  } catch (e) {
-    res.status(400).json({ message: e.message })
-  }
-})
-
 // R-ALL
 router.get('/', async (req, res) => {
   try {
@@ -34,18 +19,16 @@ router.get('/:id', getUser, (req, res) => {
 
 // U
 router.patch('/:id', getUser, async (req, res) => {
-  if (req.body.name != null) {
-    res.user.name = req.body.name
-  }
-  if (req.body.email != null) {
-    res.user.email = req.body.email
-  }
-  if (req.body.password != null) {
-    res.user.password = req.body.password
-  }
-  if (req.body.role != null) {
-    res.user.role = req.body.role
-  }
+  // if (req.body.name != null) {
+  //   res.user.name = req.body.name
+  // }
+  // if (req.body.email != null) {
+  //   res.user.email = req.body.email
+  // }
+  // if (req.body.password != null) {
+  //   res.user.password = req.body.password
+  // } ... role
+  res.user = req.body // test
   try {
     const updatedUser = await res.user.save()
     res.json(updatedUser)

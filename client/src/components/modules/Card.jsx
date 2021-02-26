@@ -6,11 +6,11 @@ const Card = ({id, body}) => {
   const {img, title, text, style} = body
   // className="w-100 h-100 module-grid"
   return (
-    <C style={style} key={id}>
+    <C style={style} key={id} className="grid-module">
       <C.Body>
         <C.Title>{title}</C.Title>
         <C.Text>{text}</C.Text>
-        <C.Img src={img}/>
+        <C.Img src={img} className="module-img"/>
       </C.Body>
     </C>
   )

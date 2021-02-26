@@ -1,18 +1,18 @@
 import React from 'react'
-import {Image as BsImage} from 'react-bootstrap'
+import {Image as I} from 'react-bootstrap'
 
 const Image = ({id, body}) => {
 
   const {src, title, alt} = body
 
   return (
-    <BsImage
+    <I
       id={id}
       key={id}
       src={src}
       title={title}
       alt={alt}
-      className="module-img"
+      className="grid-module"
     />
   )
 }

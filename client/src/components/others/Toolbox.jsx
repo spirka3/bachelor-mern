@@ -1,45 +1,40 @@
 import React from "react";
 
-const ToolBoxItem = ({item, layouts, setLayouts}) => {
+const ToolBoxItem = ({item, setToolbox, setLayouts}) => {
 
-  const onTakeItem = item => {
-    console.log('show')
-    console.log('prev', layouts)
-    const update = []
-    layouts.lg.forEach(l => {
-      if (l.i === item.i) {
-        l.hide = false
+  const onTakeItem = () => {
+    setToolbox(prevState => {
+      return {
+        ...prevState,
+        lg: prevState.lg.filter(({ i }) => i !== item.i)
       }
-      update.push(l)
     })
-    console.log('current', update)
-    setLayouts({lg: update})
+    setLayouts(prevState => {
+      return {
+        ...prevState,
+        hide: false,
+        lg: [...prevState.lg, item]
+      }
+    })
   }
 
-  if (!item.hide){
-    // console.log('not hidden')
-    return null
-  }
   return (
-    <div
-      className="toolbox__items__item"
-      onClick={()=>onTakeItem(item)}
-    >
+    <div className="toolbox__items__item" onClick={onTakeItem}>
       {item.i}
     </div>
   )
 }
 
-export const ToolBox = ({items, layouts, setLayouts}) => {
+export const ToolBox = ({toolbox, setToolbox, setLayouts}) => {
   return (
     <div className="toolbox">
-      <span className="toolbox__title">Toolbox</span>
+      <h6>Toolbox</h6>
       <div className="toolbox__items">
-        {items.map(item => (
+        {toolbox.map(item => (
           <ToolBoxItem
             key={item.i}
             item={item}
-            layouts={layouts}
+            setToolbox={setToolbox}
             setLayouts={setLayouts}
           />
         ))}
