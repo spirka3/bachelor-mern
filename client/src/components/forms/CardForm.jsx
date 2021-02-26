@@ -5,6 +5,7 @@ import TextGroupForm from "./TextGroupForm";
 const CardForm = (props) => {
 
   const {register, setModule, setIsDirty} = props
+  // const [title, setTitle] = useState();
 
   const handleChange = (e) => {
     const {value, name} = e.target
@@ -27,7 +28,8 @@ const CardForm = (props) => {
         name="title"
         register={register}
         required
-        // onChange={handleChange}
+        // value={}
+        // onChange={() => setTitle()}
       />
       {/* TEXT */}
       <TextGroupForm

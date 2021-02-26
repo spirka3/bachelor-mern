@@ -1,26 +1,26 @@
 import React from "react"
 import {Switch, Route, Redirect} from "react-router-dom"
 import './App.css'
-import CustomPage from './components/pages/CustomPage.jsx'
+import {getUser} from "./helpers/functions";
 
-import LoginPage from "./components/pages/LoginPage.jsx"
+import CustomPage from './components/pages/CustomPage.jsx'
 import LogoutPage from "./components/pages/LogoutPage.jsx"
 import AdminPage from "./components/pages/AdminPage";
-import ProfileForm from "./components/pages/ProfilePage";
-
-import {getUser} from "./helpers/functions";
 import ExampleLayout from "./components/ExampleLayout";
-import RegisterPage from "./components/pages/RegisterPage";
 import Page404 from "./components/pages/Page404";
 import uuid from "react-uuid";
 import TestPage from "./components/pages/TestPage";
+import AuthPage from "./components/pages/AuthPage";
+import ProfilePage from "./components/pages/ProfilePage";
 
 function Routes({pages}) {
 
   const PrivateRoute = ({ component: Component, ...rest }) => (
+    // TODO save path to history and after login, jump in
     // Show the component only when the user is logged in
     // Otherwise, redirect the user to /login page
-    <Route {...rest} render={props => (getUser() !== null
+    <Route {...rest} render={props => (
+      getUser()
         ? <Component {...props} />
         : <Redirect to="/login" />
       )}
@@ -33,20 +33,28 @@ function Routes({pages}) {
         <CustomPage id={_id}/>
       </Route>
     )
-  } 
+  }
+
+  const LoginPage = () => {
+    return <AuthPage action='login'/>
+  }
+
+  const RegisterPage = () => {
+    return <AuthPage action='register'/>
+  }
 
   return (
     <Switch>
       {/* Home route */}
       <Route path='/' exact component={ExampleLayout} />
-      {/* Basic routes */}
-      <Route exact path='/test' component={TestPage} />
-      <Route exact path='/register' component={RegisterPage} />
-      <Route exact path='/login' component={LoginPage} />
-      {/* Private routes */}
+      {/* User's routes */}
+      <Route exact path='/login' render={LoginPage} />
+      <Route exact path='/register' render={RegisterPage} />
       <PrivateRoute exact path='/logout' component={LogoutPage} />
-      <PrivateRoute exact path='/profile-settings' component={ProfileForm} />
+      <PrivateRoute exact path='/profile' component={ProfilePage} />
       <PrivateRoute exact path='/admin' component={AdminPage} />
+      {/* TEST */}
+      <Route exact path='/test' component={TestPage} />
       {/* Custom routes */}
       {pages.map(createRoute)}
       {/* Not matched paths */}

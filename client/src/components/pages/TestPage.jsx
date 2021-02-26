@@ -107,6 +107,11 @@ const TestPage = ({id='6033bbe31cbae847806d310d'}) => {
         setToolbox={setToolbox}
         setLayouts={setLayouts}
       />
+      <ButtonGroup onClick={(e) => setModuleType(e.target.name)}>
+        <SmallButton variant="dark" name="card">+card</SmallButton>
+        <SmallButton variant="dark" name="image">+image</SmallButton>
+      </ButtonGroup>
+      <SmallButton onClick={save} variant="dark">save grid</SmallButton>
       <GridLayout
         layouts={layouts}
         onLayoutChange={onLayoutChange}
@@ -118,12 +123,6 @@ const TestPage = ({id='6033bbe31cbae847806d310d'}) => {
       >
         {generateGrid()}
       </GridLayout>
-
-      <ButtonGroup onClick={(e) => setModuleType(e.target.name)}>
-        <SmallButton variant="dark" name="card">+card</SmallButton>
-        <SmallButton variant="dark" name="image">+image</SmallButton>
-      </ButtonGroup>
-      <SmallButton onClick={save} variant="dark">save grid</SmallButton>
       {moduleType &&
         <NewModal
           pageId={id}
@@ -133,9 +132,6 @@ const TestPage = ({id='6033bbe31cbae847806d310d'}) => {
           setLayouts={setLayouts}
         />
       }
-      {/*<Container style={{width: '200px', height: '400px'}}>*/}
-      {/*  <Image src="https://picsum.photos/200/300" className="module-img"/>*/}
-      {/*</Container>*/}
     </>
   );
 };

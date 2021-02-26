@@ -1,41 +1,22 @@
-import React from "react";
-import {useForm} from "react-hook-form";
-import {Form, Button, Container} from "react-bootstrap";
-// import {ErrorMessage} from "../others/ErrorMessage";
-import TextGroupForm from "./TextGroupForm";
+import React from "react"
+import {Form, Error, Input, Submit} from "./FormComponents"
 
-const LoginForm = ({login, loginError}) => {
-
-  const {register, handleSubmit} = useForm();
-
-  const onSubmit = (data) => {
-    login(data);
-  }
+const LoginForm = ({handleSubmit, authError}) => {
 
   return (
-    <Container className="sign-container">
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <h3 align="center">Login</h3>
-        {/* EMAIL */}
-        <TextGroupForm
-          label="email"
-          name="email"
-          register={register}
-          required
-        />
-        {/* PASS */}
-        <TextGroupForm
-          label="password"
-          name="password"
-          type="password"
-          register={register}
-          required
-        />
-        {/*{loginError && <ErrorMessage text={loginError}/>}*/}
-        <Button type="submit" variant="dark" className="btn-block">Login</Button>
-      </Form>
-    </Container>
+    <Form onSubmit={handleSubmit} className="my-form">
+      <Input
+        name="email"
+        required
+      />
+      <Input
+        name="password"
+        type="password"
+      />
+      <Error error={authError} />
+      <Submit className="btn-block">Login</Submit>
+    </Form>
   )
 }
 
-export default LoginForm;
+export default LoginForm

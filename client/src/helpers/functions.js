@@ -1,8 +1,12 @@
 import _ from "lodash";
 
-export const setUser = (token) => localStorage.setItem('token', token)
-export const getUser = () => localStorage.getItem('token')
-export const removeUser = () => localStorage.removeItem('token')
+export const reloadPage = () => window.location.reload(false);
+
+
+export const setUser = (user) => localStorage.setItem('user', user)
+export const getUser = () => localStorage.getItem('user')
+export const removeUser = () => localStorage.removeItem('user')
+
 
 export const generateLayout = () => {
   return _.map(_.range(0, 3), (item, i) => {
@@ -15,9 +19,10 @@ export const generateLayout = () => {
       h: y,
       i: i.toString(),
       static: Math.random() < 0.05
-    };
-  });
+    }
+  })
 }
+
 
 // https://stackoverflow.com/a/34890276
 export const groupBy = function(xs, key) {

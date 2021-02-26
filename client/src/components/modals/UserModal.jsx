@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import {Button, ButtonGroup, Modal} from "react-bootstrap";
 import {Image, Form} from 'react-bootstrap';
-import UserAvatar from "../others/UserAvatar";
 import {getUser} from "../../helpers/functions";
+import SmallButton from "../buttons/SmallButton";
 
 const UserModal = ({showModal, setShowModal, userImage}) => {
 
@@ -46,11 +46,9 @@ const UserModal = ({showModal, setShowModal, userImage}) => {
           <Toggle/>
         </Modal.Header>
         <Modal.Body>
-          <Button href="/admin" className={"mb-2 btn-block"}>Administration</Button>
-          <ButtonGroup className={"btn-block"} size={"sm"}>
-            <Button href="/profile-settings" className={"mr-1"}>Profile settings</Button>
-            <Button href="/logout">Log out</Button>
-          </ButtonGroup>
+          <SmallButton href="/admin" className="mb-2 btn-block">Administration</SmallButton>
+          <SmallButton href="/profile" className="mr-2">Profile</SmallButton>
+          <SmallButton href="/logout">Log out</SmallButton>
         </Modal.Body>
       </>
     )

@@ -55,7 +55,7 @@ router.post('/register', async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-    if (user) throw Error('User already exists');
+    if (user) throw Error('Email is already taken');
 
     const salt = await bcrypt.genSalt(10);
     if (!salt) throw Error('Something went wrong with bcrypt');

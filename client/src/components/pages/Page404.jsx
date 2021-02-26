@@ -1,22 +1,9 @@
 import React from "react";
-import {Redirect, useLocation} from "react-router";
+import {useLocation} from "react-router";
 
 const Page404 = () => {
 
   let pathname = useLocation().pathname;
-  const privatePaths = [
-    '/finder',
-    '/settings',
-    '/saved-record',
-    '/add-record',
-    '/signed-records',
-    '/records-to-sign',
-    '/logout'
-  ]
-
-  if (privatePaths.includes(pathname)){
-    return <Redirect to={'/login'} />
-  }
 
   return (
     <>
