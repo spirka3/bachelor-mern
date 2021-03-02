@@ -8,7 +8,9 @@ router.post('/', async (req, res) => {
     title: req.body.title,
     description: req.body.description,
     path: req.body.path,
-    status: req.body.status,
+    private: req.body.private,
+    onNavBar: req.body.onNavBar,
+    children: req.body.children,
     created_by: req.body.created_by
   })
   try {
@@ -25,7 +27,7 @@ router.get('/', async (req, res) => {
     const pages = await Page.find();
     res.json(pages);
   } catch (e) {
-    res.status(400).json({ msg: e.message });
+    res.status(400).json({ message: e.message });
   }
 });
 
@@ -36,13 +38,9 @@ router.get('/:id', getPage, (req, res) => {
 
 // U
 router.patch('/:id', getPage, async (req, res) => {
-  if (req.body.title != null) {
-    res.page.title = req.body.title
-  }
-  res.page.description = req.body.description
-  res.page.status = req.body.status
+  const { title, description, path, hidden, onNavBar, children, created_by } = req.body
   try {
-    const updatedPage = await res.page.save()
+    const updatedPage = await res.page.updateOne({description, hidden, onNavBar, children, created_by})
     res.json(updatedPage)
   } catch (e) {
     res.status(400).json({ message: e.message })

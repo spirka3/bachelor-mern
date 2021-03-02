@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import axios from "axios";
 import {Redirect} from "react-router";
-import {getUser, setUser, reloadPage} from "../../helpers/functions";
+import {getAuth, setAuth, reloadPage} from "../../helpers/functions";
 import LoginForm from "../forms/LoginForm.jsx";
 import RegisterForm from "../forms/RegisterForm";
 
@@ -13,15 +13,15 @@ const AuthPage = ({action}) => {
   const handleSubmit = (data) => {
     axios.post(`/auth/${action}`, data)
       .then(response => {
-        setUser(response.data)
+        setAuth(response.data)
         reloadPage()
       })
       .catch(err => {
-        setAuthError(err.response.data.msg)
+        setAuthError(err.response.data.message)
       })
   }
 
-  if (getUser()) {
+  if (getAuth()) {
     return <Redirect to="/"/>
   }
 

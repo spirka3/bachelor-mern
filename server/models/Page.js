@@ -11,15 +11,32 @@ const PageSchema = new Schema({
   },
   path: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
-  status: {
-    type: String,
-    default: 'active'
+  hidden: {
+    type: Boolean,
+    default: false
+  },
+  onNavBar:{
+    type: Boolean,
+    default: true
+  },
+  children: {
+    type: Array
+    // TODO ref: "Page"
   },
   created_by: {
     type: Schema.Types.ObjectId,
     ref: "User"
+  },
+  create_date: {
+    type: Date,
+    default: Date.now()
+  },
+  update_Date: {
+    type: Date,
+    default: Date.now()
   }
 });
 

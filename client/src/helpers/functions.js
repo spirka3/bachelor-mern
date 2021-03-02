@@ -1,11 +1,24 @@
 import _ from "lodash";
 
-export const reloadPage = () => window.location.reload(false);
+/** Setup config/headers and token */
+export const tokenConfig = () => {
 
+  const token = getAuth().token;
 
-export const setUser = (user) => localStorage.setItem('user', user)
-export const getUser = () => localStorage.getItem('user')
-export const removeUser = () => localStorage.removeItem('user')
+  // Headers
+  const config = {
+    headers: { 'Content-type': 'application/json' }
+  };
+  // If token, add to headers
+  if (token) {
+    config.headers['x-auth-token'] = token;
+  }
+  return config;
+};
+
+export const setAuth = auth => localStorage.setItem('auth', JSON.stringify(auth))
+export const getAuth = () => JSON.parse(localStorage.getItem('auth'))
+export const delAuth = () => localStorage.removeItem('auth')
 
 
 export const generateLayout = () => {
@@ -24,10 +37,4 @@ export const generateLayout = () => {
 }
 
 
-// https://stackoverflow.com/a/34890276
-export const groupBy = function(xs, key) {
-  return xs.reduce(function(rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
-  }, {});
-};
+export const reloadPage = () => window.location.reload(false);

@@ -1,10 +1,10 @@
 import React from "react"
 import {Redirect} from "react-router"
-import {removeUser} from "../../helpers/functions"
+import {delAuth} from "../../helpers/functions"
 
 const LogoutPage = () => {
 
-  removeUser()
+  delAuth()
 
   return <Redirect to="/"/>
 }

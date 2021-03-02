@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from "react"
 import { Responsive, WidthProvider } from "react-grid-layout";
-import {ButtonGroup, Container, Image} from "react-bootstrap";
+import { ButtonGroup } from "react-bootstrap";
 import axios from "axios";
 import {FetchError, FetchLoading} from "../others/FetchComponents";
 import useDataApi from "../../helpers/useDataApi";
-import BuilderModule from "../modules/BuilderModule";
 import SmallButton from "../buttons/SmallButton";
 import NewModal from "../modules/modals/NewModal";
 import {ToolBox} from "../others/Toolbox";
-import {GridBoxItem} from "../others/Gridbox";
+import {createGridBox} from "../others/Gridbox";
 
 const GridLayout = WidthProvider(Responsive);
 
@@ -88,18 +87,6 @@ const TestPage = ({id='6033bbe31cbae847806d310d'}) => {
     })
   }
 
-  const generateGrid = () => {
-    return layouts.lg.map(layout => (
-      <div key={layout.i} className="grid-box">
-        <GridBoxItem
-          module={getModule(layout.i)}
-          setLayouts={setLayouts}
-          setToolbox={setToolbox}
-        />
-      </div>
-    ))
-  }
-
   return (
     <>
       <ToolBox
@@ -119,9 +106,8 @@ const TestPage = ({id='6033bbe31cbae847806d310d'}) => {
         preventCollision={!compactType}
         measureBeforeMount={!animated}
         useCSSTransforms={animated}
-        class="contain"
       >
-        {generateGrid()}
+        {createGridBox(modules, layouts.lg, setLayouts, setToolbox)}
       </GridLayout>
       {moduleType &&
         <NewModal
@@ -133,8 +119,8 @@ const TestPage = ({id='6033bbe31cbae847806d310d'}) => {
         />
       }
     </>
-  );
-};
+  )
+}
 
 export default TestPage
 

@@ -1,46 +1,84 @@
-import React, {useEffect, useState} from "react";
-import {Button, ButtonGroup} from "react-bootstrap";
-import MyEditor from "../others/MyEditor";
-import {getUser, reloadPage, setUser} from "../../helpers/functions";
-import UserInfoForm from "../forms/UserInfoForm";
-import UserPassForm from "../forms/UserPassForm";
+import React, {useEffect, useState} from "react"
 import axios from "axios";
+import {ButtonGroup, Button, Container} from 'react-bootstrap'
+import ImageEditor from "../others/ImageEditor"
+import UserInfoForm from "../forms/UserInfoForm"
+import UserPassForm from "../forms/UserPassForm"
+import {tokenConfig} from "../../helpers/functions";
 
 const ProfilePage = () => {
 
-  const [formType, setFormType] = useState('name');
-
-  const user = getUser() // TODO get token
+  const [form, setForm] = useState('profile')
+  const [user, setUser] = useState()
+  const [error, setError] = useState()
 
   useEffect(() => {
-    axios.post('/auth/user', user)
+    axios.get('/auth/user', tokenConfig())
       .then(response => {
-        console.log(response.data)
+        setUser(response.data)
       })
       .catch(err => {
         console.log(err.response)
       })
   }, []);
 
-
-  const active = (id) => {
-    return formType === id && 'active';
+  const changeForm = (e) => {
+    setError(null)
+    setForm(e.target.id)
   }
 
+  const saveImage = (image) => {
+    onSubmit('/users/avatar/', { avatar: image })
+  }
+
+  const saveProfile = (data) => {
+    onSubmit('/users/', data)
+  }
+
+  const savePassword = (data) => {
+    onSubmit('/users/password/', data)
+  }
+
+  const onSubmit = (url, data) => {
+    console.log('submit', data)
+    axios.patch(url+user._id, data)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(err => {
+        setError(err.response.data.message)
+        console.log(err.response)
+      })
+  }
+
+  const props = {
+    defaultValues: user,
+    onSubmit: form === 'profile'
+      ? saveProfile
+      : savePassword,
+    error,
+    style: {
+      width: "250px"
+    }
+  }
+
+  const active = id => form === id && 'active'
+
   return (
-    <>
-      <MyEditor userImage={user.image}/>
-
-      <ButtonGroup onClick={(e) => setFormType(e.target.id)} className="btn-header">
-        <Button id="name" className={active("name")}>Change name</Button>
-        <Button id="pass" className={active("pass")}>Change pass</Button>
+    <Container>
+      <ImageEditor src={user?.avatar} saveImage={saveImage} />
+      <ButtonGroup
+        className="my-3"
+        onClick={changeForm}
+      >
+        <Button id="profile" className={active("profile")}>Change name</Button>
+        <Button id="passwd" className={active("passwd")}>Change pass</Button>
       </ButtonGroup>
-
-      {formType === 'name'
-        ? <UserInfoForm data={user.name}/>
-        : <UserPassForm/>
+      {form === 'profile'
+        ? <UserInfoForm {...props} />
+        : <UserPassForm {...props} />
       }
-    </>
+    </Container>
   )
 }
 

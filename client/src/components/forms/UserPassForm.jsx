@@ -1,41 +1,32 @@
 import React from "react";
-import {useForm} from "react-hook-form";
-import {Form, Button} from "react-bootstrap";
-import {setUser} from "../../helpers/functions";
-import TextGroupForm from "./TextGroupForm";
+import {Error, Form, Input, Submit} from "./FormComponents";
 
-const UserPassForm = () => {
-
-  const {register, handleSubmit} = useForm();
-
-  const savePass = (data) => {
-    // TODO saveIntoDB
-    setUser({name: data.name, pass: data.password})
-  }
+const UserInfoForm = (props) => {
 
   return (
-    <Form>
-      {/* NEW PASS */}
-      <TextGroupForm
-        label="new password"
+    <Form {...props}>
+      <Input
+        label="current password"
         name="password"
         type="password"
-        register={register}
-        required={true}
+        required
       />
-      {/* CONFIRM-PASS */}
-      <TextGroupForm
+      <Input
         label="new password"
-        name="password"
+        name="newPassword"
         type="password"
-        register={register}
-        required={true}
+        required
       />
-      <Button type="submit" variant="dark" className="btn-block" onClick={handleSubmit(savePass)}>
-        Save pass
-      </Button>
+      <Input
+        label="confirm new password"
+        name="confirmPassword"
+        type="password"
+        required
+      />
+      <Error error={props.error} />
+      <Submit className="btn-block">Save</Submit>
     </Form>
   )
 }
 
-export default UserPassForm;
+export default UserInfoForm

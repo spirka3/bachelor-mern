@@ -15,28 +15,27 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:4000/pages/
+PATCH http://localhost:4000/pages/603e894eec470a30a0f788f8
 Content-Type: application/json
 
 {
   "title": "page3",
-  "description": "eq.body.description",
+  "description": "description",
   "path": "/page3",
-  "status": "active",
-  "created_by": "6033891cb9538243b0b23061"
-}
-
-
-###
-
-PATCH http://localhost:4000/pages/6033c94f1916fa2b70837a37
-Content-Type: application/json
-
-{
-  "title": "page1",
-  "description": "eq.body.description",
-  "path": "/page1",
-  "status": "active",
+  "hidden": false,
+  "onNavBar": true,
+  "children": [
+    {
+      "title": "page4",
+      "path": "/page4",
+      "children": []
+    },
+    {
+      "title": "page5",
+      "path": "/page5",
+      "children": []
+    }
+  ],
   "created_by": "6033891cb9538243b0b23061"
 }
 
@@ -68,4 +67,10 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:4000/modules/page/6033bbe31cbae847806d310d
+#POST http://localhost:4000/auth
+#Content-Type: application/json
+#
+#{
+#    "email": 'ja',
+#    "password": 'ja'
+#}

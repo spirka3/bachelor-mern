@@ -1,8 +1,8 @@
 import {Button} from "react-bootstrap";
 import React, {useState} from "react";
 import MyModal from "../../modals/MyModal";
-import CardForm from "../../forms/CardForm";
-import ImageForm from "../../forms/ImageForm";
+import CardForm from "../forms/CardForm";
+import ImageForm from "../forms/ImageForm";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 

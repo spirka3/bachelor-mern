@@ -8,7 +8,7 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true
+    // unique: true // fixme
   },
   password: {
     type: String,
@@ -17,6 +17,10 @@ const UserSchema = new Schema({
   role: {
     type: String,
     default: 'user'
+  },
+  avatar: {
+    type: String,
+    default: 'defaultAvatar'
   },
   register_date: {
     type: Date,

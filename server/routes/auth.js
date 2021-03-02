@@ -1,12 +1,11 @@
 import { Router } from 'express';
-// import config from '../config';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import auth from '../middleware/auth';
 import User from '../models/User';
+import config from '../config';
 
-// const { JWT_SECRET } = config;
-const JWT_SECRET = "secret"
+const { JWT_SECRET } = config;
 const router = Router();
 
 /**
@@ -37,7 +36,7 @@ router.post('/login', async (req, res) => {
       }
     });
   } catch (e) {
-    res.status(400).json({ msg: e.message });
+    res.status(400).json({ message: e.message });
   }
 });
 
@@ -47,10 +46,10 @@ router.post('/login', async (req, res) => {
  */
 
 router.post('/register', async (req, res) => {
-  const { name, email, password, confirmPassword, role='user' } = req.body;
+  const { name, email, password, confirmPassword, role, avatar } = req.body;
 
   if (password !== confirmPassword) {
-    return res.status(400).json({ msg: 'Passwords dont match' });
+    return res.status(400).json({ message: 'Passwords dont match' });
   }
 
   try {
@@ -67,7 +66,8 @@ router.post('/register', async (req, res) => {
       name,
       email,
       password: hash,
-      role
+      role,
+      avatar
     });
 
     const savedUser = await newUser.save();
@@ -88,12 +88,12 @@ router.post('/register', async (req, res) => {
     });
   } catch (e) {
     console.log('got here')
-    res.status(400).json({ msg: e.message });
+    res.status(400).json({ message: e.message });
   }
 });
 
 /**
- * @route   GET api/auth/user
+ * @route   GET /auth/user
  * @desc    Get user data
  */
 
@@ -103,7 +103,7 @@ router.get('/user', auth, async (req, res) => {
     if (!user) throw Error('User does not exist');
     res.json(user);
   } catch (e) {
-    res.status(400).json({ msg: e.message });
+    res.status(400).json({ message: e.message });
   }
 });
 

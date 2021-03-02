@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import {Button, ButtonGroup, Modal} from "react-bootstrap";
 import {Image, Form} from 'react-bootstrap';
-import {getUser} from "../../helpers/functions";
+import {getAuth} from "../../helpers/functions";
 import SmallButton from "../buttons/SmallButton";
 
 const UserModal = ({showModal, setShowModal, userImage}) => {
 
   const closeModal = () => setShowModal(false);
-  const user = getUser();
+  const user = getAuth();
 
   const handleClick = () => {
     console.log("clg")

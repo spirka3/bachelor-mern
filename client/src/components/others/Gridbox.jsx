@@ -7,6 +7,7 @@ export const GridBoxItem = ({module, setLayouts, setToolbox}) => {
   let item = module.position
 
   const onHide = () => {
+    console.log('hide')
     setToolbox(prevState => {
       return {
         ...prevState,
@@ -21,7 +22,6 @@ export const GridBoxItem = ({module, setLayouts, setToolbox}) => {
       }
     })
   }
-
   const togglePin = () => {
     console.log('toggle')
     setLayouts(prev => {
@@ -33,7 +33,6 @@ export const GridBoxItem = ({module, setLayouts, setToolbox}) => {
       return {...prev, lg: [...filtered, found]}
     })
   }
-
   const onRemove = () => {
     console.log('remove')
     axios.delete('/modules/'+module._id)
@@ -60,16 +59,17 @@ export const GridBoxItem = ({module, setLayouts, setToolbox}) => {
   )
 }
 
-// export const GridBox = ({getModule, layouts, setLayouts}) => {
-//   const showing = layouts.lg.filter(layout => !layout.hide)
-//   console.log('showing')
-//   return (
-//     <div className="grid-box">
-//       {showing.map(layout => (
-//         <div key={layout.i}>
-//           <GridBoxItem module={()=>getModule(layout.i)} layout={layout} setLayouts={setLayouts}/>
-//         </div>
-//       ))}
-//     </div>
-//   )
-// }
+export const createGridBox = (modules, layouts, setLayouts, setToolbox) => {
+
+  const getModule = id => modules.find(m => m._id === id)
+
+  return layouts.map(layout => (
+    <div key={layout.i} className="grid-box">
+      <GridBoxItem
+        module={getModule(layout.i)}
+        setLayouts={setLayouts}
+        setToolbox={setToolbox}
+      />
+    </div>
+  ))
+}

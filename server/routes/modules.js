@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
     const modules = await Module.find();
     res.json(modules);
   } catch (e) {
-    res.status(400).json({ msg: e.message });
+    res.status(400).json({ message: e.message });
   }
 });
 
@@ -42,7 +42,7 @@ router.get('/page/:id', async (req, res) => {
     const modules = await Module.find({page: req.params.id});
     res.json(modules);
   } catch (e) {
-    res.status(400).json({ msg: e.message });
+    res.status(400).json({ message: e.message });
   }
 })
 

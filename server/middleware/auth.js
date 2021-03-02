@@ -8,15 +8,12 @@ export default (req, res, next) => {
 
   // Check for token
   if (!token)
-    return res.status(401).json({ msg: 'No token, authorization denied' });
+    return res.status(401).json({ message: 'No token, authorization denied' });
 
   try {
-    // Verify token
-    const decoded = jwt.verify(token, JWT_SECRET);
-    // Add user from payload
-    req.user = decoded;
+    req.user = jwt.verify(token, JWT_SECRET) // decode
     next();
   } catch (e) {
-    res.status(400).json({ msg: 'Token is not valid' });
+    res.status(400).json({ message: 'Token is not valid' });
   }
 };

@@ -7,6 +7,15 @@ import SmallButton from "../buttons/SmallButton";
 
 const CustomPage = ({id}) => {
 
+//   const Pages = [{
+//     id: '',
+//     title: '',
+//     path: '',
+//     status: 'active | hidden | private',
+//     inNav: true,
+//   }
+// ]
+
   const [modules, setModules] = useState([])
   const [moduleType, setModuleType] = useState(false);
 
@@ -44,5 +53,6 @@ const CustomPage = ({id}) => {
     </>
   )
 }
+
 
 export default CustomPage;

@@ -1,7 +1,7 @@
 import React from "react"
 import {Switch, Route, Redirect} from "react-router-dom"
 import './App.css'
-import {getUser} from "./helpers/functions";
+import {getAuth} from "./helpers/functions";
 
 import CustomPage from './components/pages/CustomPage.jsx'
 import LogoutPage from "./components/pages/LogoutPage.jsx"
@@ -12,6 +12,7 @@ import uuid from "react-uuid";
 import TestPage from "./components/pages/TestPage";
 import AuthPage from "./components/pages/AuthPage";
 import ProfilePage from "./components/pages/ProfilePage";
+import TreePage from "./components/pages/TreePage";
 
 function Routes({pages}) {
 
@@ -20,7 +21,7 @@ function Routes({pages}) {
     // Show the component only when the user is logged in
     // Otherwise, redirect the user to /login page
     <Route {...rest} render={props => (
-      getUser()
+      getAuth()
         ? <Component {...props} />
         : <Redirect to="/login" />
       )}
@@ -55,6 +56,8 @@ function Routes({pages}) {
       <PrivateRoute exact path='/admin' component={AdminPage} />
       {/* TEST */}
       <Route exact path='/test' component={TestPage} />
+      <Route exact path='/tree' component={TreePage} />
+      {/* ---- */}
       {/* Custom routes */}
       {pages.map(createRoute)}
       {/* Not matched paths */}

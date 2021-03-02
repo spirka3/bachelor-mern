@@ -1,18 +1,11 @@
-// Tento skript slúži na vygenerovanie dát do databázy.
-// Pred spustením skriptu je potrebné mať stiahnuté node_modules ($ npm init)
-// a správne nadstavený parameter MONGODB_URI v súbore .env
-// Skript sa spúšta cez npm ($ npm run generate)
-//
-// Otázky boli vytvorené zo stránok https://sk.wikipedia.org/
-
-// pripojenie na mongodb
+// connectDB
 require('dotenv').config()
-const mongoose = require('../utils/mongoose')
+require('../config/mongoose')
 
 // nacitanie modelov
-const Account = require('../models/account')
-const Category = require('../models/category')
-const Question = require('../models/question')
+const Module = require('../models/Module')
+const Page = require('../models/Page')
+const User = require('../models/User')
 
 // pomocne funkcie pre generovanie
 const addCategory = async function(_id, parent) {
@@ -201,47 +194,6 @@ const setRandomAnswersInputs = (inputs) => {
   return answeredInputs
 }
 
-
-const testgenerator = require('./testgenerator')
-var allQuestions = []
-
-// vygeneruje jeden test s odpoveďami
-const getRandomTest = function() {
-  const selectedQuestions = testgenerator.selectQuestions(allQuestions, 5+Math.floor(Math.random()*10))
-  const test = {
-    submitted: true,
-    test_questions: setRandomAnswers(selectedQuestions)
-  }
-  return test
-}
-
-const getRandomTests = function() {
-  const tests = []
-  const count = 2+Math.floor(Math.random()*5)
-  for(let i = 0; i < count; i++){
-    const randomTest = getRandomTest() 
-    tests.push(randomTest)
-  }
-  return tests
-}
-
-// vygenerovanie pouzivatelov a testov
-const generateUsers = async function () {
-  const first_names = ['Adam', 'Boris', 'Cyril', 'Dušan', 'Emil']
-  const last_names = ['Zelený', 'Malý', 'Velký', 'Krátky' ,'Dlhý']
-
-  for(let i = 0; i<20; i++){
-    let randomTests = getRandomTests()
-    await addAccount(
-      'user'+i,
-      'user',
-      first_names[Math.floor(Math.random() * first_names.length)],
-      last_names[Math.floor(Math.random() * last_names.length)],
-      20+Math.floor(Math.random() * 80),
-      randomTests
-    )
-  }
-}
 
 // ukoncenie
 const exit = async function(){

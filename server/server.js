@@ -16,21 +16,21 @@ const app = express()
 app.use(express.json())
 
 // CORS Middleware
-app.use(cors({
-  origin: '*',
-  optionsSuccessStatus: 200,
-}));
-// app.use(cors({origin: true}));
+// app.use(cors({
+//   origin: '*',
+//   optionsSuccessStatus: 200,
+// }));
+app.use(cors({ origin: true }));
 // app.use(cors());
 
 // useRoutes
-app.use('/auth', authRoutes);
+app.use('/auth', authRoutes)
 app.use('/users', userRoutes)
-app.use('/pages', pageRoutes);
-app.use('/modules', moduleRoutes);
+app.use('/pages', pageRoutes)
+app.use('/modules', moduleRoutes)
 
 // runServer
-const PORT = 4000
+const PORT = process.env.PORT
 app.listen(PORT, () =>
   console.log(`Server Started on http://localhost:${PORT}/`)
 )

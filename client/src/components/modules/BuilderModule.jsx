@@ -1,11 +1,9 @@
-import React, {useState} from "react";
-import Card from "./Card";
-import EditModal from "./modals/EditModal";
-import Image from "./Image";
-import Button from "react-bootstrap/Button";
-import SmallButton from "../buttons/SmallButton";
-import {ButtonGroup, OverlayTrigger, Tooltip} from "react-bootstrap";
-import axios from "axios";
+import React, {useState} from "react"
+import Card from "./Card"
+import Image from "./Image"
+import SmallButton from "../buttons/SmallButton"
+import {ButtonGroup, Col, Row} from "react-bootstrap"
+import EditForm from "./forms/EditForm";
 
 const BuilderModule = ({module: m, togglePin, onHide, onRemove, showBtn=true}) => {
 
@@ -13,13 +11,14 @@ const BuilderModule = ({module: m, togglePin, onHide, onRemove, showBtn=true}) =
   const [showModal, setShowModal] = useState(false)
 
   const Module = () => {
+    const props = {
+      id: module._id,
+      body: module.body
+    }
     switch(module.type) {
-      case "card":
-        return <Card id={module._id} body={module.body} />
-      case "image":
-        return <Image id={module._id} body={module.body} />
-      default:
-        console.log('module was not rendered', module)
+      case "card":  return <Card {...props} />
+      case "image": return <Image {...props} />
+      default:      return <h1>Get to default</h1>
     }
   }
 
@@ -44,7 +43,7 @@ const BuilderModule = ({module: m, togglePin, onHide, onRemove, showBtn=true}) =
         </ButtonGroup>
       }
       {showModal &&
-        <EditModal
+        <EditForm
           module={module}
           setModule={setModule}
           setShowModal={setShowModal}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useForm } from "react-hook-form";
 import {Button, Form as F, FormControl, FormGroup, FormLabel} from "react-bootstrap"
 import {upperFirst} from "lodash";
@@ -6,12 +6,17 @@ import uuid from "react-uuid";
 import {ExclamationTriangle} from "react-bootstrap-icons";
 
 // src: https://react-hook-form.com/advanced-usage/#SmartFormComponent
-export function Form({ defaultValues, children, onSubmit, className }) {
+export function Form({ defaultValues, children, onSubmit, className, style }) {
   const methods = useForm({ defaultValues });
-  const { handleSubmit } = methods;
+
+  const { handleSubmit, reset } = methods;
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [defaultValues]);
 
   return (
-    <F onSubmit={handleSubmit(onSubmit)} className={className}>
+    <F onSubmit={handleSubmit(onSubmit)} className={className} style={style}>
       {Array.isArray(children)
         ? children.map(child => {
           return child.props?.name
@@ -58,8 +63,8 @@ export function Select({ register, options, name, label, required, ...rest }) {
     return (
       <>
         <option hidden value="">Select option ...</option>
-        {options.map(value => (
-          <option key={uuid()} value={value}>{value}</option>
+        {options.map((value, i) => (
+          <option key={`${value}_${i}`} value={value}>{value}</option>
         ))}
       </>
     )

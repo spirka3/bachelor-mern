@@ -1,30 +1,20 @@
 import React from "react";
-import {useForm} from "react-hook-form";
-import {Form, Button} from "react-bootstrap";
-import {setUser} from "../../helpers/functions";
-import TextGroupForm from "./TextGroupForm";
+import {Error, Form, Input, Submit} from "./FormComponents";
 
-const UserInfoForm = () => {
-
-  const {register, handleSubmit} = useForm()
-
-  const saveEmail = (data) => {
-    // TODO saveIntoDB
-    setUser({name: data.name, pass: data.pass})
-  }
+const UserInfoForm = (props) => {
 
   return (
-    <Form onSubmit={handleSubmit(saveEmail)}>
-      {/* NAME */}
-      <TextGroupForm
-        label="new name"
+    <Form {...props}>
+      <Input
         name="name"
-        register={register}
-        required={true}
+        required
       />
-      <Button type="submit" variant="dark" className="btn-block">
-        Save name
-      </Button>
+      <Input
+        name="email"
+        required
+      />
+      <Error error={props.error} />
+      <Submit className="btn-block">Save</Submit>
     </Form>
   )
 }
