@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from "react";
-import SortableTree, {toggleExpandedForAll} from "react-sortable-tree";
-import {Button, ButtonGroup, Modal} from "react-bootstrap";
+import SortableTree, {toggleExpandedForAll, removeNodeAtPath} from "react-sortable-tree";
+import {Button, Modal} from "react-bootstrap";
+import {Typeahead} from 'react-bootstrap-typeahead' // TODO replace
 
-
-const NavModal = ({pages, setPages, closeModal}) => {
+const NavModal = ({pages, setPages, hiddenPages, setHiddenPages, closeModal}) => {
 
   const [treeData, setTreeData] = useState([])
   const [toggle, setToggle] = useState(false)
-  const [search, setSearch] = useState();
-
+  const [searchTerm, setSearchTerm] = useState()
+  const [adding, setAdding] = useState()
+  
   const isChild = ({title}) => {
     return pages.filter(page => page.children.some(child => child.title === title)).length
   }
@@ -22,9 +23,27 @@ const NavModal = ({pages, setPages, closeModal}) => {
     setPages(treeData)
   }
 
-  const handleSearch = (e) => {
-    setSearch(e.target.value)
-    console.log(search)
+  const addNav = (adding) => {
+    const newOnNav = adding[0]
+    newOnNav.onNavBar = true
+    setHiddenPages(hiddenPages.filter(page => page.title !== newOnNav.title))
+    setTreeData([...treeData, newOnNav])
+    setPages([...pages, newOnNav])
+  }
+
+  const RemoveButton = ({path}) => {
+    const removeNav = () => {
+      const rest = removeNodeAtPath({treeData, path, getNodeKey})
+      const removed = treeData - rest // todo ... a potom este hiddenPages + removed :D :D prezatial
+      console.log(removed)
+      setTreeData(rest)
+    }
+    // todo
+    return <button onClick={removeNav}>Remove</button>
+  }
+  
+  const onSearchTermChange = (e) => {
+    setSearchTerm(e.target.value)
   }
 
   const expand = () => {
@@ -42,7 +61,10 @@ const NavModal = ({pages, setPages, closeModal}) => {
     console.log('hide')
   }
 
+  const getNodeKey = ({ treeIndex }) => treeIndex
+
   return (
+    <React.Fragment>
     <Modal show={true} onHide={closeModal} centered>
       <Modal.Header closeButton>
         <Modal.Title>Custom pages</Modal.Title>
@@ -54,17 +76,28 @@ const NavModal = ({pages, setPages, closeModal}) => {
               Expand
             </button>
             <label>Search: </label>
-            <input onChange={handleSearch} />
+            <input onChange={onSearchTermChange} />
           </div>
         <SortableTree
           treeData={treeData}
           onChange={treeData => onChange(treeData)}
+          searchQuery={searchTerm}
           maxDepth={2}
-          searchQuery={search}
+          generateNodeProps={({ path }) => ({
+            buttons: [ <RemoveButton path={path} /> ]
+          })}
         />
         </div>
+        <Typeahead
+          name="newNav"
+          labelKey={e => `${e.title} ${e.path}`}
+          onChange={addNav}
+          options={hiddenPages}
+          placeholder="Choose an employees..."
+        />
       </Modal.Body>
     </Modal>
+    </React.Fragment>
   )
 }
 

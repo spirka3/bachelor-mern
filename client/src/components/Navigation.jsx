@@ -8,51 +8,48 @@ import {useLocation} from "react-router";
 import uuid from "react-uuid";
 import SmallButton from "./buttons/SmallButton";
 import NavModal from "./modals/NavModal";
-import {nav_routes} from "../helpers/data";
 
 const Navigation = ({pages: p}) => {
 
   const [pages, setPages] = useState(p)
-  const [children, setChildren] = useState([]);
-  const [visible, setVisible] = useState(false);
+  // const [children, setChildren] = useState(getChildren());
+  const [hiddenPages, setHiddenPages] = useState(p.filter(page => !page.onNavBar))
 
+  const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const openModal = () => setShowModal(false);
+  const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
 
-  const hasChildren = (page) => {
-    return page.children.length
-  }
+  // const getChildren = () => {
+  //   return p
+  //     .map(page => page.children())
+  //     .flat()
+  //     .filter(child => child)
+  // }
+  // const hasChildren = page => page.children.length
+  // useEffect(() => {
+  //   const ch = p.map(page => {
+  //     if (hasChildren(page))
+  //       return page.children
+  //   })
+  //   // console.log(ch.flat())
+  //   setChildren(p.flat(page => {
+  //     return page.children
+  //   }))
+  // }, []);
 
-  useEffect(() => {
-    const ch = p.map(page => {
-      if (hasChildren(page))
-        return page.children
-    })
-    // console.log(ch.flat())
-    setChildren(p.flat(page => {
-      return page.children
-    }))
-  }, []);
-
-
-  const edit = () => {
-    setShowModal(true)
-    console.log('edit')
-  }
-
-  const isChild = ({title}) => {
-    return pages.filter(page => page.children.some(child => child.title === title)).length
+  const onlyChild = ({title}) => {
+    return !pages.filter(page => page.children.some(child => child.title === title)).length
   }
 
   const CustomNavs = () => {
-    const shown = pages.filter(p => !p.hidden)
-    return shown.map(page => (
+    return pages.map(page => (
       <div key={uuid()}>
-        {page.children.length
+        {page.onNavBar && onlyChild(page) && (
+          page.children.length
           ? <DropDown page={page}/>
-          : !isChild(page) && <NavLink href={page.path}>{page.title}</NavLink>
-        }
+          : <NavLink href={page.path}>{page.title}</NavLink>
+        )}
       </div>
     ))
   }
@@ -61,7 +58,7 @@ const Navigation = ({pages: p}) => {
     return (
       <NavDropdown title={page.title} id={page._id}>
         {page.children.map(child => {
-          return <NavDropdown.Item href={child.path}>{child.title}</NavDropdown.Item>
+          return <NavDropdown.Item href={child.path} key={child.path}>{child.title}</NavDropdown.Item>
         })}
       </NavDropdown>
     )
@@ -85,7 +82,7 @@ const Navigation = ({pages: p}) => {
         {/*<Button onClick={ () => setVisible(true) }>Open</Button>*/}
         {/*<Sidebar side='left' isVisible={visible} onHide={ () => setVisible(false) }>*/}
           <Nav className="ml-auto" navbar activeKey={useLocation().pathname}>
-            <SmallButton onClick={edit} className="m-2">EditNav</SmallButton>
+            <SmallButton onClick={openModal} className="m-2">EditNav</SmallButton>
             {/* TEST */}
             <NavLink href='/test'/>
             <NavLink href='/tree'/>
@@ -98,8 +95,10 @@ const Navigation = ({pages: p}) => {
       </Navbar>
       {showModal &&
         <NavModal
-          pages={pages}
+          pages={pages.filter(page => onlyChild(page) && page.onNavBar)}
           setPages={setPages}
+          hiddenPages={hiddenPages}
+          setHiddenPages={setHiddenPages}
           closeModal={closeModal}/>
       }
     </>
