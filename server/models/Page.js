@@ -19,8 +19,8 @@ const PageSchema = new Schema({
     default: false
   },
   onNavBar:{
-    type: Boolean,
-    default: true
+    type: Boolean, // String
+    default: true  // top or child or hide
   },
   children: {
     type: Array

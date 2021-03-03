@@ -4,10 +4,10 @@ import {UserIcon} from './others/UserIcon'
 import {SearchBar} from './SearchBar'
 import Image from "react-bootstrap/Image";
 import {useLocation} from "react-router";
-// import Sidebar from 'react-bootstrap-sidebar';
 import uuid from "react-uuid";
 import SmallButton from "./buttons/SmallButton";
 import NavModal from "./modals/NavModal";
+// import Sidebar from 'react-bootstrap-sidebar';
 
 const Navigation = ({pages: p}) => {
 
@@ -95,7 +95,7 @@ const Navigation = ({pages: p}) => {
       </Navbar>
       {showModal &&
         <NavModal
-          pages={pages.filter(page => onlyChild(page) && page.onNavBar)}
+          pages={pages.filter(page => onlyChild(page) && page.onNavBar)} // pages onNavBar
           setPages={setPages}
           hiddenPages={hiddenPages}
           setHiddenPages={setHiddenPages}
@@ -106,3 +106,4 @@ const Navigation = ({pages: p}) => {
 };
 
 export default Navigation
+

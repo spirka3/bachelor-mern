@@ -26,14 +26,20 @@ Content-Type: application/json
   "onNavBar": true,
   "children": [
     {
+      "_id": "page4",
       "title": "page4",
+      "description": "description",
       "path": "/page4",
-      "children": []
+      "hidden": false,
+      "onNavBar": true
     },
     {
+      "_id": "page5",
       "title": "page5",
+      "description": "description",
       "path": "/page5",
-      "children": []
+      "hidden": false,
+      "onNavBar": true
     }
   ],
   "created_by": "6033891cb9538243b0b23061"
