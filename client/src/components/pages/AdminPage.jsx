@@ -6,20 +6,6 @@ import {Button} from "react-bootstrap";
 
 const AdminPage = () => {
 
-  // TODO
-  // const handleAccept = () => {
-  // }
-  //
-  // const columns = [{
-  //   dataField: 'name',
-  //   text: 'CustomPage name'
-  // }, {
-  //   dataField: 'visible',
-  //   text: 'Visible',
-  //   formatter: Toggle,
-  //   headerStyle: () => { return {width: '1%'}; }
-  // }]
-
   const renderPageLine = (page) => {
     return (
       <div>

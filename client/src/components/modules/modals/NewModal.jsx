@@ -55,27 +55,23 @@ const NewModal = ({pageId, moduleType, setModules, setShowModal, setLayouts}) =>
   }
 
   const Body = () => {
+    const props = {
+      onSubmit
+    }
     switch(moduleType) {
       case "card":
-        return <CardForm register={register} setIsDirty={setIsDirty}/>
+        return <CardForm {...props} />
       case "image":
-        return <ImageForm register={register} setIsDirty={setIsDirty}/>
+        return <ImageForm {...props} />
       default:
         console.log('module was not rendered', module)
     }
-  }
-
-  const Footer = () => {
-    return (
-      <Button variant="dark" onClick={handleSubmit(onSubmit)}>Save</Button>
-    )
   }
 
   return (
     <MyModal
       header='New Module'
       body={<Body/>}
-      footer={<Footer/>}
       isDirty={isDirty}
       setShowModal={setShowModal}
     />

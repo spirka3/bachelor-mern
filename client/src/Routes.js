@@ -44,6 +44,10 @@ function Routes({pages}) {
     return <AuthPage action='register'/>
   }
 
+  const PagesTree = () => {
+    return <TreePage pages={pages}/>
+  }
+
   return (
     <Switch>
       {/* Home route */}
@@ -56,7 +60,7 @@ function Routes({pages}) {
       <PrivateRoute exact path='/admin' component={AdminPage} />
       {/* TEST */}
       <Route exact path='/test' component={TestPage} />
-      <Route exact path='/tree' component={TreePage} />
+      <Route exact path='/tree' component={PagesTree} />
       {/* ---- */}
       {/* Custom routes */}
       {pages.map(createRoute)}
