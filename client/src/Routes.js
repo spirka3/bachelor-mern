@@ -6,7 +6,6 @@ import {getAuth} from "./helpers/functions";
 import CustomPage from './components/pages/CustomPage.jsx'
 import LogoutPage from "./components/pages/LogoutPage.jsx"
 import AdminPage from "./components/pages/AdminPage";
-import ExampleLayout from "./components/ExampleLayout";
 import Page404 from "./components/pages/Page404";
 import uuid from "react-uuid";
 import TestPage from "./components/pages/TestPage";
@@ -50,8 +49,6 @@ function Routes({pages}) {
 
   return (
     <Switch>
-      {/* Home route */}
-      <Route path='/' exact component={ExampleLayout} />
       {/* User's routes */}
       <Route exact path='/login' render={LoginPage} />
       <Route exact path='/register' render={RegisterPage} />

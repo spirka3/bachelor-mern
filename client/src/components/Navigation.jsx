@@ -7,36 +7,23 @@ import {useLocation} from "react-router";
 import uuid from "react-uuid";
 import SmallButton from "./buttons/SmallButton";
 import NavModal from "./modals/NavModal";
-// import Sidebar from 'react-bootstrap-sidebar';
+import {useEditor} from "@craftjs/core";
 
 const Navigation = ({pages: p}) => {
 
+  // const {
+  //   enabled,
+  //   actions: { setOptions },
+  // } = useEditor((state) => ({
+  //   enabled: state.options.enabled,
+  // }));
+
   const [pages, setPages] = useState(p)
-  // const [children, setChildren] = useState(getChildren());
   const [hiddenPages, setHiddenPages] = useState(p.filter(page => !page.onNavBar))
 
-  const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
-
-  // const getChildren = () => {
-  //   return p
-  //     .map(page => page.children())
-  //     .flat()
-  //     .filter(child => child)
-  // }
-  // const hasChildren = page => page.children.length
-  // useEffect(() => {
-  //   const ch = p.map(page => {
-  //     if (hasChildren(page))
-  //       return page.children
-  //   })
-  //   // console.log(ch.flat())
-  //   setChildren(p.flat(page => {
-  //     return page.children
-  //   }))
-  // }, []);
 
   const onlyChild = ({title}) => {
     return !pages.filter(page => page.children.some(child => child.title === title)).length
@@ -83,6 +70,7 @@ const Navigation = ({pages: p}) => {
         {/*<Sidebar side='left' isVisible={visible} onHide={ () => setVisible(false) }>*/}
           <Nav className="ml-auto" navbar activeKey={useLocation().pathname}>
             <SmallButton onClick={openModal} className="m-2">EditNav</SmallButton>
+
             {/* TEST */}
             <NavLink href='/test'/>
             <NavLink href='/tree'/>

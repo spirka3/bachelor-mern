@@ -6,8 +6,6 @@ import './App.css'
 import Navigation from "./components/Navigation.jsx"
 import Footer from "./components/Footer.jsx"
 import Routes from "./Routes"
-import Header from "./components/toolbars/Header";
-import Dashboard from "./components/toolbars/Dash";
 import useDataApi from "./helpers/useDataApi";
 import {FetchError, FetchLoading} from "./components/others/FetchComponents";
 
@@ -33,9 +31,7 @@ function App() {
 
   return (
     <Router>
-      {/*<Header />*/}
       <Navigation pages={pages}/>
-      {/*<Dashboard/>*/}
       <Container>
         <Routes pages={pages}/>
       </Container>
