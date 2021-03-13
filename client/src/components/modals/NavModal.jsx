@@ -5,8 +5,9 @@ import {Typeahead} from 'react-bootstrap-typeahead'
 import SmallButton from "../buttons/SmallButton"; // TODO replace
 
 // https://frontend-collective.github.io/react-sortable-tree/?path=/story/basics--add-and-remove-nodes-programmatically
-const NavModal = ({pages, setPages, hiddenPages, setHiddenPages, closeModal}) => {
+const NavModal = ({pages, setPages, closeModal}) => {
 
+  const [hiddenPages, setHiddenPages] = useState([]);
   const [toggle, setToggle] = useState(false)
   const [searchTerm, setSearchTerm] = useState()
   const [adding, setAdding] = useState()

@@ -19,6 +19,10 @@ const CardForm = (props) => {
         name="img"
         onChange={f}
       />
+      <Input
+        name="style"
+        onChange={f}
+      />
       <Submit className="btn-block">Save</Submit>
     </Form>
   )

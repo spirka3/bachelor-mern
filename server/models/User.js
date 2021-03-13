@@ -8,15 +8,15 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
-    // unique: true // fixme
+    // unique: true FIX ?
   },
   password: {
     type: String,
     required: true
   },
-  role: {
-    type: String,
-    default: 'user'
+  admin: {
+    type: Boolean,
+    default: false
   },
   avatar: {
     type: String,

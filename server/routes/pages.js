@@ -9,8 +9,8 @@ router.post('/', async (req, res) => {
     description: req.body.description,
     path: req.body.path,
     private: req.body.private,
-    onNavBar: req.body.onNavBar,
-    children: req.body.children,
+    published: req.body.published,
+    navbar: req.body.navbar,
     created_by: req.body.created_by
   })
   try {
@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
   }
 })
 
-// R-ALL
+// R all
 router.get('/', async (req, res) => {
   try {
     const pages = await Page.find();
@@ -31,17 +31,17 @@ router.get('/', async (req, res) => {
   }
 });
 
-// R
+// R specific
 router.get('/:id', getPage, (req, res) => {
   res.json(res.page)
 })
 
 // U
 router.patch('/:id', getPage, async (req, res) => {
-  const { title, description, path, hidden, onNavBar, children, created_by } = req.body
   try {
-    const updatedPage = await res.page.updateOne({description, hidden, onNavBar, children, created_by})
-    res.json(updatedPage)
+    const updated = updateModel(res, req, 'page')
+    const saved = await updated.save()
+    res.json(saved)
   } catch (e) {
     res.status(400).json({ message: e.message })
   }
@@ -72,12 +72,13 @@ async function getPage(req, res, next) {
   next()
 }
 
-// function checkAuthenticated(req, res, next) {
-//   if (req.isAuthenticated()) {
-//     return next()
-//   }
-//
-//   res.redirect('/login')
-// }
+function updateModel(res, req, model) {
+  res[model].schema.eachPath(path => {
+    const newVal = req.body[path]
+    if (path !== '_id' && path !== '__v' && newVal !== undefined)
+      res[model][path] = newVal
+  })
+  return res[model]
+}
 
 export default router;

@@ -14,17 +14,12 @@ const PageSchema = new Schema({
     required: true,
     unique: true
   },
-  hidden: {
+  published: {
     type: Boolean,
     default: false
   },
-  onNavBar:{
-    type: Boolean, // String
-    default: true  // top or child or hide
-  },
-  children: {
-    type: Array
-    // TODO ref: "Page"
+  navbar: {
+    type: Object
   },
   created_by: {
     type: Schema.Types.ObjectId,

@@ -13,13 +13,11 @@ export const UserIcon = () => {
   return (
     <div>
       <Image src={userImage} rounded onClick={handleClick} className={"p-1"}  style={{width:"40px", height:"40px"}}/>
-      { showModal &&
-        <UserModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          userImage={userImage}
-        />
-      }
+      <UserModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        userImage={userImage}
+      />
     </div>
   )
 }

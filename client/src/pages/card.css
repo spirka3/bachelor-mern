@@ -1,0 +1,11 @@
+.card-horizontal {
+    display: flex;
+    flex: 1 1 auto;
+}
+
+.overflow-dots {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /*white-space: nowrap;*/
+    width: 100%;
+}

@@ -4,11 +4,15 @@ import Image from "./Image"
 import SmallButton from "../buttons/SmallButton"
 import {ButtonGroup, Col, Row} from "react-bootstrap"
 import EditForm from "./forms/EditForm";
+import {getEdit} from "../../helpers/functions";
+import {Redirect} from "react-router";
 
-const BuilderModule = ({module: m, togglePin, onHide, onRemove, showBtn=true}) => {
+const BuilderModule = ({module: m, togglePin, onHide, onRemove}) => {
 
   const [module, setModule] = useState(m);
   const [showModal, setShowModal] = useState(false)
+
+  const showBtn = getEdit()
 
   const Module = () => {
     const props = {
@@ -18,14 +22,20 @@ const BuilderModule = ({module: m, togglePin, onHide, onRemove, showBtn=true}) =
     switch(module.type) {
       case "card":  return <Card {...props} />
       case "image": return <Image {...props} />
-      default:      return <h1>Get to default</h1>
+      default:      return <h1>Not found type</h1>
     }
   }
+
+  const redirect = () => {
+    console.log('redirect')
+    return <Redirect to='www.google.com' />
+  }
+
 
   return (
     <>
       <h1 className="toolbar">Hello, I'm the Toolbar</h1>
-      <Module/>
+      <Module onClick={redirect} />
       {showBtn &&
         <ButtonGroup className="w-100">
           <SmallButton className="show-up" onClick={() => setShowModal(true)}>

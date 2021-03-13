@@ -2,12 +2,12 @@ import React, {useEffect, useState} from "react"
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { ButtonGroup } from "react-bootstrap";
 import axios from "axios";
-import {FetchError, FetchLoading} from "../others/FetchComponents";
-import useDataApi from "../../helpers/useDataApi";
-import SmallButton from "../buttons/SmallButton";
-import NewModal from "../modules/modals/NewModal";
-import {ToolBox} from "../others/Toolbox";
-import {createGridBox} from "../others/Gridbox";
+import {FetchError, FetchLoading} from "../components/others/FetchComponents";
+import useDataApi from "../helpers/useDataApi";
+import SmallButton from "../components/buttons/SmallButton";
+import NewModal from "../components/modules/modals/NewModal";
+import {ToolBox} from "../components/others/Toolbox";
+import {createGridBox} from "../components/others/Gridbox";
 
 const GridLayout = WidthProvider(Responsive);
 
@@ -34,13 +34,11 @@ const TestPage = ({id='6033bbe31cbae847806d310d'}) => {
     }
   }, [data])
 
-  if (error) {
-    return <FetchError e={`Error: ${error.message}`}/>
-  } else if (!isLoaded || !data) {
-    return <FetchLoading/>
-  }
+  if (error) return <FetchError e={error.message} />
+  if (!isLoaded || !data) return <FetchLoading />
 
-  const [compactType, animated] = ['vertical', true]
+  const compactType = 'vertical'
+  const animated = true
 
   const onLayoutChange = (layout) => {
     console.log('changed layout to', layout)
@@ -87,6 +85,48 @@ const TestPage = ({id='6033bbe31cbae847806d310d'}) => {
     })
   }
 
+  const addCard = () => {
+    const newModule = {
+      page: id,
+      name: "moduleXY",
+      type: 'card',
+      position: {
+        x: 0,
+        y: 0,
+        w: 3,
+        h: 2,
+        static: false
+      },
+      body: data,
+      status: "active"
+    }
+    addToDb(newModule)
+  }
+
+  const addToDb = (newModule) => {
+    axios.post('/modules', newModule)
+      .then(response => {
+        const addedModule = response.data
+        const positionWithId = {
+          ...addedModule.position,
+          i: addedModule._id
+        }
+        setModules(prev => [...prev, {
+          ...addedModule,
+          position: positionWithId
+        }])
+        setLayouts(prev => {
+          return {
+            lg: [...prev.lg, positionWithId]
+          }
+        })
+        console.log(response)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
   return (
     <>
       <ToolBox
@@ -94,10 +134,11 @@ const TestPage = ({id='6033bbe31cbae847806d310d'}) => {
         setToolbox={setToolbox}
         setLayouts={setLayouts}
       />
-      <ButtonGroup onClick={(e) => setModuleType(e.target.name)}>
-        <SmallButton variant="dark" name="card">+card</SmallButton>
-        <SmallButton variant="dark" name="image">+image</SmallButton>
-      </ButtonGroup>
+      <SmallButton onClick={addCard} variant="dark">+card</SmallButton>
+      {/*<ButtonGroup onClick={(e) => setModuleType(e.target.name)}>*/}
+      {/*  <SmallButton variant="dark" name="card">+card</SmallButton>*/}
+      {/*  <SmallButton variant="dark" name="image">+image</SmallButton>*/}
+      {/*</ButtonGroup>*/}
       <SmallButton onClick={save} variant="dark">save grid</SmallButton>
       <GridLayout
         layouts={layouts}
@@ -123,4 +164,3 @@ const TestPage = ({id='6033bbe31cbae847806d310d'}) => {
 }
 
 export default TestPage
-

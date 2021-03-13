@@ -4,12 +4,9 @@ import {pages} from "../../helpers/data";
 
 const Toggle = ({id}) => {
 
-  const [swt, setSwt] = useState(true);
-
   function handleChange() {
     const page = pages.find(p => p.id === id)
     page.visible = !page.visible
-    setSwt(!swt)
   }
 
   return (

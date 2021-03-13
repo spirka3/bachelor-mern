@@ -6,17 +6,19 @@ export const navLinks = [
   { title: `faq`, path: `/faq` }
 ];
 
-export const nav_routes = [
+export const navs = [
   {
+    type: 'flat',
     title: "One",
     path: "/one"
-  }, {
-    title: "Two",
-    path: "/two"
-  }, {
-    title: "Three",
-    path: "/three",
-    drop: [
+  },
+  {
+    type: 'none'
+  },
+  {
+    type: 'drop',
+    title: 'drop',
+    children: [
       {
         title: "Four",
         path: "/four"

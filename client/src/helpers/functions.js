@@ -20,6 +20,9 @@ export const setAuth = auth => localStorage.setItem('auth', JSON.stringify(auth)
 export const getAuth = () => JSON.parse(localStorage.getItem('auth'))
 export const delAuth = () => localStorage.removeItem('auth')
 
+export const setEdit = () => localStorage.setItem('edit', 'true')
+export const getEdit = () => JSON.parse(localStorage.getItem('edit'))
+export const delEdit = () => localStorage.removeItem('edit')
 
 export const generateLayout = () => {
   return _.map(_.range(0, 3), (item, i) => {
@@ -36,5 +39,8 @@ export const generateLayout = () => {
   })
 }
 
+export const formattedDate = (date) => {
+  return date.substr(0,10).split("-").reverse().join(".");
+}
 
 export const reloadPage = () => window.location.reload(false);

@@ -1,69 +1,70 @@
-import React from "react"
-import {Switch, Route, Redirect} from "react-router-dom"
-import './App.css'
-import {getAuth} from "./helpers/functions";
+import React from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { getAuth } from "./helpers/functions";
 
-import CustomPage from './components/pages/CustomPage.jsx'
-import LogoutPage from "./components/pages/LogoutPage.jsx"
-import AdminPage from "./components/pages/AdminPage";
-import ExampleLayout from "./components/ExampleLayout";
-import Page404 from "./components/pages/Page404";
+import CustomPage from "./pages/CustomPage.jsx";
+import LogoutPage from "./pages/LogoutPage.jsx";
+import HomePage from "./pages/HomePage";
+import Page404 from "./pages/Page404";
 import uuid from "react-uuid";
-import TestPage from "./components/pages/TestPage";
-import AuthPage from "./components/pages/AuthPage";
-import ProfilePage from "./components/pages/ProfilePage";
-import TreePage from "./components/pages/TreePage";
+import TestPage from "./pages/TestPage";
+import AuthPage from "./pages/AuthPage";
+import ProfilePage from "./pages/ProfilePage";
+import TreePage from "./pages/TreePage";
+import PageTable from "./components/tables/PagesTable";
+import UsersTable from "./components/tables/UsersTable";
 
-function Routes({pages}) {
-
+function Routes({ pages }) {
   const PrivateRoute = ({ component: Component, ...rest }) => (
-    // TODO save path to history and after login, jump in
-    // Show the component only when the user is logged in
-    // Otherwise, redirect the user to /login page
-    <Route {...rest} render={props => (
-      getAuth()
-        ? <Component {...props} />
-        : <Redirect to="/login" />
-      )}
+    <Route
+      render={(props) =>
+        getAuth() ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: props.location },
+            }}
+          />
+        )
+      }
+      {...rest}
     />
-  )
+  );
 
-  const createRoute = ({path, _id}) => {
-    return (
-      <Route exact path={path} key={uuid()}>
-        <CustomPage id={_id}/>
-      </Route>
-    )
-  }
+  const CustomRoutes = () => pages.map(createRoute);
 
-  const LoginPage = () => {
-    return <AuthPage action='login'/>
-  }
+  const createRoute = (page) => {
+    const Page = () => <CustomPage page={page} />;
+    const props = {
+      exact: true,
+      path: page.path,
+      key: uuid(),
+      component: Page,
+    };
+    return page.published ? <Route {...props} /> : <PrivateRoute {...props} />;
+  };
 
-  const RegisterPage = () => {
-    return <AuthPage action='register'/>
-  }
+  const PagesTable = () => <PageTable pages={pages} />;
 
   return (
     <Switch>
-      {/* Home route */}
-      <Route path='/' exact component={ExampleLayout} />
-      {/* User's routes */}
-      <Route exact path='/login' render={LoginPage} />
-      <Route exact path='/register' render={RegisterPage} />
-      <PrivateRoute exact path='/logout' component={LogoutPage} />
-      <PrivateRoute exact path='/profile' component={ProfilePage} />
-      <PrivateRoute exact path='/admin' component={AdminPage} />
+      <Route exact path="/" component={HomePage} />
+      <Route exact path="/login" component={AuthPage} />
+      <Route exact path="/register" component={AuthPage} />
       {/* TEST */}
-      <Route exact path='/test' component={TestPage} />
-      <Route exact path='/tree' component={TreePage} />
+      <Route exact path="/test" component={TestPage} />
+      <Route exact path="/tree" component={TreePage} />
       {/* ---- */}
-      {/* Custom routes */}
-      {pages.map(createRoute)}
-      {/* Not matched paths */}
-      <Route path="*" component={Page404}/>
+      <PrivateRoute exact path="/logout" component={LogoutPage} />
+      <PrivateRoute exact path="/profile" component={ProfilePage} />
+      <PrivateRoute exact path="/pages" component={PagesTable} />
+      <PrivateRoute exact path="/users" component={UsersTable} />
+      <CustomRoutes />
+      <Route path="*" component={Page404} />
     </Switch>
-  )
+  );
 }
 
-export default Routes
+export default Routes;

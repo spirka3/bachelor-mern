@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import ShowcaseLayout from "./ShowcaseLayout";
+import ShowcaseLayout from "../components/ShowcaseLayout";
 
-const ExampleLayout = () => {
+const HomePage = () => {
 
   const [layout, setLayout] = useState([])
 
@@ -31,4 +31,4 @@ const ExampleLayout = () => {
   )
 }
 
-export default ExampleLayout
+export default HomePage

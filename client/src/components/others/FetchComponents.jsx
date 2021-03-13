@@ -6,5 +6,5 @@ export const FetchLoading = () => {
 }
 
 export const FetchError = ({e}) => {
-  return <h6 className="p-5">{e}</h6>
+  return <h6 className="p-5">{`Error: ${e}`}</h6>
 }

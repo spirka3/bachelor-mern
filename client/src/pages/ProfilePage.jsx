@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react"
 import axios from "axios";
 import {ButtonGroup, Button, Container} from 'react-bootstrap'
-import ImageEditor from "../others/ImageEditor"
-import UserInfoForm from "../forms/UserInfoForm"
-import UserPassForm from "../forms/UserPassForm"
-import {tokenConfig} from "../../helpers/functions";
+import ImageEditor from "../components/others/ImageEditor"
+import UserInfoForm from "../components/forms/UserInfoForm"
+import UserPassForm from "../components/forms/UserPassForm"
+import {tokenConfig} from "../helpers/functions";
 
 const ProfilePage = () => {
 
@@ -28,20 +28,20 @@ const ProfilePage = () => {
   }
 
   const saveImage = (image) => {
-    onSubmit('/users/avatar/', { avatar: image })
+    onSubmit('/users', { avatar: image })
   }
 
   const saveProfile = (data) => {
-    onSubmit('/users/', data)
+    onSubmit('/users', data)
   }
 
   const savePassword = (data) => {
-    onSubmit('/users/password/', data)
+    onSubmit('/users/password', data)
   }
 
   const onSubmit = (url, data) => {
     console.log('submit', data)
-    axios.patch(url+user._id, data)
+    axios.patch(`${url}/${user._id}`, data)
       .then(response => {
         console.log(response)
       })

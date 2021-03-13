@@ -1,109 +1,116 @@
-import React, {useEffect, useState} from 'react'
-import {Navbar, Nav, NavLink, NavDropdown, Modal} from 'react-bootstrap'
-import {UserIcon} from './others/UserIcon'
-import {SearchBar} from './SearchBar'
+import React, { useState } from "react";
+import { Navbar, Nav, NavLink, NavDropdown } from "react-bootstrap";
+import { UserIcon } from "./others/UserIcon";
+import { SearchBar } from "./SearchBar";
 import Image from "react-bootstrap/Image";
-import {useLocation} from "react-router";
+import { useLocation } from "react-router";
 import uuid from "react-uuid";
 import SmallButton from "./buttons/SmallButton";
 import NavModal from "./modals/NavModal";
-// import Sidebar from 'react-bootstrap-sidebar';
+import { delEdit, getEdit, setEdit } from "../helpers/functions";
+import NewPageModal from "./modals/NewPageModal";
+import { navs } from "../helpers/data";
 
-const Navigation = ({pages: p}) => {
+/** eheaeads */
+const Navigation = ({ pages: _pages }) => {
+  const [pages, setPages] = useState(navs);
 
-  const [pages, setPages] = useState(p)
-  // const [children, setChildren] = useState(getChildren());
-  const [hiddenPages, setHiddenPages] = useState(p.filter(page => !page.onNavBar))
-
-  const [visible, setVisible] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const openModal = () => setShowModal(true);
+  const [showModal2, setShowModal2] = useState(false);
+  const openNav = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
+  const closeModal2 = () => setShowModal2(false);
 
-  // const getChildren = () => {
-  //   return p
-  //     .map(page => page.children())
-  //     .flat()
-  //     .filter(child => child)
-  // }
-  // const hasChildren = page => page.children.length
-  // useEffect(() => {
-  //   const ch = p.map(page => {
-  //     if (hasChildren(page))
-  //       return page.children
-  //   })
-  //   // console.log(ch.flat())
-  //   setChildren(p.flat(page => {
-  //     return page.children
-  //   }))
-  // }, []);
+  const editNav = () => {
+    openNav();
+  };
 
-  const onlyChild = ({title}) => {
-    return !pages.filter(page => page.children.some(child => child.title === title)).length
-  }
+  const newPage = () => {
+    setShowModal2(true);
+  };
+
+  const toggleEditor = () => {
+    getEdit() ? delEdit() : setEdit();
+    setEditMode(!editMode);
+  };
 
   const CustomNavs = () => {
-    return pages.map(page => (
-      <div key={uuid()}>
-        {page.onNavBar && onlyChild(page) && (
-          page.children.length
-          ? <DropDown page={page}/>
-          : <NavLink href={page.path}>{page.title}</NavLink>
-        )}
-      </div>
-    ))
-  }
+    return navs
+      .filter((p) => p.type !== "none")
+      .map((p) => (
+        <div key={uuid()}>
+          {p.type === "drop" ? (
+            <DropDown page={p} />
+          ) : (
+            <NavLink href={p.path}>{p.title}</NavLink>
+          )}
+        </div>
+      ));
+  };
 
-  const DropDown = ({page}) => {
-    return (
-      <NavDropdown title={page.title} id={page._id}>
-        {page.children.map(child => {
-          return <NavDropdown.Item href={child.path} key={child.path}>{child.title}</NavDropdown.Item>
-        })}
-      </NavDropdown>
-    )
-  }
+  const DropDown = ({ page }) => (
+    <NavDropdown title={page.title} id={page.title}>
+      {page.children.map((child) => {
+        return (
+          <NavDropdown.Item href={child.path} key={child.path}>
+            {child.title}
+          </NavDropdown.Item>
+        );
+      })}
+    </NavDropdown>
+  );
 
-  const NavBrand = () => {
-    return (
-      <Navbar.Brand href="/">
-        <Image alt="logo" src="/logo.png" width="40" height="40"/>
-      </Navbar.Brand>
-    )
-  }
+  const NavBrand = () => (
+    <Navbar.Brand href="/">
+      <Image alt="logo" src="/logo.png" width="40" height="40" />
+    </Navbar.Brand>
+  );
+
+  const EditControls = () => (
+    <>
+      <SmallButton onClick={toggleEditor} className="m-2">
+        Finish
+      </SmallButton>
+      <SmallButton onClick={newPage} className="m-2">
+        New page
+      </SmallButton>
+      {/*<SmallButton onClick={editNav} className="m-2">Edit nav</SmallButton>*/}
+      {/*<SmallButton onClick={undo} className="m-2">Undo</SmallButton>*/}
+      {/*<SmallButton onClick={redo} className="m-2">Redo</SmallButton>*/}
+    </>
+  );
 
   return (
     <>
       <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
-        <NavBrand/>
-        <SearchBar/>
-        <Navbar.Toggle/>
+        <NavBrand />
+        <SearchBar />
+        <Navbar.Toggle />
         <Navbar.Collapse>
-        {/*<Button onClick={ () => setVisible(true) }>Open</Button>*/}
-        {/*<Sidebar side='left' isVisible={visible} onHide={ () => setVisible(false) }>*/}
+          {editMode ? (
+            <EditControls />
+          ) : (
+            <SmallButton onClick={toggleEditor}>Edit</SmallButton>
+          )}
           <Nav className="ml-auto" navbar activeKey={useLocation().pathname}>
-            <SmallButton onClick={openModal} className="m-2">EditNav</SmallButton>
-            {/* TEST */}
-            <NavLink href='/test'/>
-            <NavLink href='/tree'/>
-            {/* ---- */}
-            <CustomNavs/>
-            <UserIcon/>
+            <NavLink href="/test">Tst</NavLink>
+            <NavLink href="/tree">Tree</NavLink>
+            <CustomNavs />
+            <UserIcon />
           </Nav>
-        {/*</Sidebar>*/}
         </Navbar.Collapse>
       </Navbar>
-      {showModal &&
+      {showModal && (
         <NavModal
-          pages={pages.filter(page => onlyChild(page) && page.onNavBar)} // pages onNavBar
+          pages={pages.filter((p) => p.type !== "none")}
           setPages={setPages}
-          hiddenPages={hiddenPages}
-          setHiddenPages={setHiddenPages}
-          closeModal={closeModal}/>
-      }
+          closeModal={closeModal}
+        />
+      )}
+      {showModal2 && <NewPageModal closeModal={closeModal2} />}
     </>
-  )
+  );
 };
 
-export default Navigation
-
+export default Navigation;

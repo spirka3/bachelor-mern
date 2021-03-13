@@ -3,7 +3,7 @@ import User from '../models/User';
 import bcrypt from "bcryptjs";
 const router = Router();
 
-// R-ALL
+// R all
 router.get('/', async (req, res) => {
   try {
     const users = await User.find();
@@ -13,28 +13,25 @@ router.get('/', async (req, res) => {
   }
 });
 
-// U profile
+// U
 router.patch('/:id', getUser, async (req, res) => {
-  const { name, email, role } = req.body;
+
+  if ('password' in req.body) {
+    // TODO /password/:id
+    return
+  }
+
+  const { email } = req.body;
 
   try {
-    if (res.user.email !== email) {
+    // validate email
+    if (email && email !== res.user.email){
       const user = await User.findOne({ email });
       if (user) throw Error('Email is already taken');
     }
-    const savedUser = await res.user.updateOne({ name, email, role })
-    res.json(savedUser)
-  } catch (e) {
-    res.status(400).json({ message: e.message })
-  }
-})
 
-// U avatar
-router.patch('/avatar/:id', getUser, async (req, res) => {
-  const { avatar } = req.body;
-
-  try {
-    const savedUser = await res.user.updateOne({ avatar })
+    const updatedUser = updateUser(res, req)
+    const savedUser = await updatedUser.save()
     res.json(savedUser)
   } catch (e) {
     res.status(400).json({ message: e.message })
@@ -94,16 +91,14 @@ async function getUser(req, res, next) {
   next()
 }
 
+// TEST
 function updateUser(res, req) {
-  const updatedUser = new User({})
-  // fixme i also got _id :(
-  for (const key in res.user.schema.obj) {
-    if (key === '_id') continue
-    const curVal = res.user[key]
-    const newVal = req.body[key]
-    updatedUser[key] = newVal !== undefined ? newVal : curVal
-  }
-  return updatedUser
+  res.user.schema.eachPath(path => {
+    const newVal = req.body[path]
+    if (path !== '_id' && path !== '__v' && newVal !== undefined)
+      res.user[path] = newVal
+  })
+  return res.user
 }
 
 export default router;

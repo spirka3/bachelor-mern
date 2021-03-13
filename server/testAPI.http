@@ -15,33 +15,17 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:4000/pages/603e894eec470a30a0f788f8
+POST http://localhost:4000/pages
 Content-Type: application/json
 
 {
-  "title": "page3",
+  "title": "as",
   "description": "description",
-  "path": "/page3",
-  "hidden": false,
-  "onNavBar": true,
-  "children": [
-    {
-      "_id": "page4",
-      "title": "page4",
-      "description": "description",
-      "path": "/page4",
-      "hidden": false,
-      "onNavBar": true
-    },
-    {
-      "_id": "page5",
-      "title": "page5",
-      "description": "description",
-      "path": "/page5",
-      "hidden": false,
-      "onNavBar": true
-    }
-  ],
+  "path": "/as",
+  "published": true,
+  "navbar": {
+    "type": "flat"
+  },
   "created_by": "6033891cb9538243b0b23061"
 }
 
